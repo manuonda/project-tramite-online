@@ -1,7 +1,7 @@
 package com.tramite.online.domain.entity;
 
 import com.tramite.online.audit.Auditable;
-import com.tramite.online.domain.model.QuestionType;
+import com.tramite.online.domain.type.QuestionType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

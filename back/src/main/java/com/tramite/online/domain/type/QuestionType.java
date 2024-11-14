@@ -1,4 +1,4 @@
-package com.tramite.online.domain.model;
+package com.tramite.online.domain.type;
 
 public enum QuestionType {
    QUESTION_TEXT,

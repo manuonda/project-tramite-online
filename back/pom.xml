@@ -18,7 +18,11 @@
 		<license/>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+		<email>manuonda@gmail.com</email>
+		<name>David Garcia</name>
+		<organization>Q-Onda</organization>
+		</developer>
 	</developers>
 	<scm>
 		<connection/>
@@ -129,6 +133,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>tramite-back</finalName>
 	</build>
 
 </project>

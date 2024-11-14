@@ -3,7 +3,7 @@ package com.tramite.online.domain.entity;
 import java.util.Set;
 
 import com.tramite.online.audit.Auditable;
-import com.tramite.online.domain.model.SectionType;
+import com.tramite.online.domain.type.SectionType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
