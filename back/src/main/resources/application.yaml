@@ -5,4 +5,5 @@ spring:
     name: project-tramite-online
 
 
-
+application:
+  page-size: 10
