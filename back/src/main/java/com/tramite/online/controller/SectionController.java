@@ -35,7 +35,7 @@ public class SectionController {
     }
 
     @PostMapping
-    public ResponseEntity<SectionDTO> save(SectionDTO sectionDTO){
+    public ResponseEntity<SectionDTO> save(@Validation SectionDTO sectionDTO){
         logger.info("Save Section : {}", sectionDTO);
         return ResponseEntity.status(HttpStatus.OK).body(this.sectionService.save(sectionDTO));
     }
