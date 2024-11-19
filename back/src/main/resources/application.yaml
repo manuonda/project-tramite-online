@@ -1,9 +1,0 @@
-server:
-  port: ${PORT:8080}
-spring:
-  application:
-    name: project-tramite-online
-
-
-application:
-  page-size: 10

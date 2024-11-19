@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "seccion")
+@Table(name = "sections")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -31,7 +32,10 @@ import lombok.NoArgsConstructor;
 public class Section extends Auditable<String>{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, 
+    generator="section_id_generator")
+    @SequenceGenerator(name="section_id_generator" ,
+    sequenceName="section_id_seq", allocationSize=1)
     private Long id;
 
     @Column(name="name", nullable=false , length=50)
@@ -46,7 +50,6 @@ public class Section extends Auditable<String>{
     private SectionType sectionType;
 
     @OneToMany(mappedBy = "section", fetch= FetchType.LAZY)
-    @JoinColumn(columnDefinition="seccion_id")
     private Set<Question> questions;
 
 }
