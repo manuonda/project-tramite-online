@@ -82,4 +82,13 @@ public class SectionService {
         sectionDTO.setEnabled(section.getEnabled());
         return sectionDTO;
     }
+
+
+    public void delete(Long id) {
+        Section section = this.sectionRepository.findById(id)
+        .orElseThrow(() ->  new ResourceNotFound("Section "));
+
+        section.setEnabled(Boolean.FALSE);
+        this.sectionRepository.save(section);
+    }
 }
