@@ -2,14 +2,21 @@ package com.tramite.online.exception;
 
 import java.net.URI;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
@@ -40,6 +47,14 @@ public class GlobalException extends ResponseEntityExceptionHandler{
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Handler for ResourceFound exceptions.
+     * 
+     * @param ex ResourceFound exception
+     * @return ResponseEntity with ProblemDetail
+     */
+/******  19dc3ba1-7f7d-44ce-b600-4d9f9b973c1b  *******/
     @ExceptionHandler(ResourceFound.class)
     ResponseEntity<ProblemDetail> handleResourceFound(ResourceFound ex){
       logger.info("HandlerResourceFound  {}", ex.getMessage());
@@ -61,26 +76,26 @@ public class GlobalException extends ResponseEntityExceptionHandler{
      * @param request
      * @return
      */
-    // @Override
-    // protected ResponseEntity<Object> handleMethodArgumentNotValid(
-    //         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    //     logger.info("HandlerArgumentNotValid  {}", ex.getMessage());
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        logger.info("HandlerArgumentNotValid  {}", ex.getMessage());
         
-    //     ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
-    //     problemDetail.setTitle("Validation Error");
-    //     problemDetail.setProperty("time", Instant.now());
-    //     problemDetail.setType(URI.create("https://api.bookstore.com/errors/validation"));
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
+        problemDetail.setTitle("Validation Error");
+        problemDetail.setProperty("time", Instant.now());
+        problemDetail.setType(URI.create("https://api.bookstore.com/errors/validation"));
     
-    //     List<String> errors = new ArrayList<>();
-    //     ex.getBindingResult().getAllErrors().forEach(error -> {
-    //         String fieldName = ((FieldError) error).getField();
-    //         String errorMessage = error.getDefaultMessage();
-    //         errors.add(fieldName + ":" + errorMessage);
-    //     });
-    //     problemDetail.setProperty("errors", errors);
+        List<String> errors = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.add(fieldName + ":" + errorMessage);
+        });
+        problemDetail.setProperty("errors", errors);
     
-    //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
-    // }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
     
   
 

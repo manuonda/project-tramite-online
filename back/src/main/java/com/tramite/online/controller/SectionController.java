@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.service.SectionService;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -54,6 +53,8 @@ public class SectionController {
     }
 
 
+    @Operation(summary="Delete Section by Id", description = "Delete Section by Id")
+    @ApiResponse(responseCode = "200", description = "Response Code 200")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteSection(@PathVariable("id") Long id){
         logger.info("Delete Section by Id : {}", id);
