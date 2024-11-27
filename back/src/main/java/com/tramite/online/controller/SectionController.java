@@ -6,12 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.method.MethodSecurityBeanDefinitionParser.SecuredAuthorizationMethodInterceptor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tramite.online.domain.dto.SectionDTO;
@@ -40,7 +42,10 @@ public class SectionController {
 
 
     @GetMapping
-    public List<SectionDTO> getAll() {
+    public List<SectionDTO> getAll(
+        @RequestParam(defaultValue = "10") int page,
+        @RequestParam(defaultValue = "10") int size,
+        @RequestBody SectionDTO sectionDTO) {
         return null;
     }
 
@@ -60,6 +65,14 @@ public class SectionController {
         logger.info("Delete Section by Id : {}", id);
         this.sectionService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Delete Section ");
+    }
+
+
+
+    @Operation(summary = "Update Section by Id", description = "Update Section by Id parameter")
+    public ResponseEntity<SectionDTO> updateSection(@PathVariable("id") Long id, 
+    @RequestBody SectionDTO sectionDTO){
+
     }
 
 
