@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.method.MethodSecurityBeanDefinitionParser.SecuredAuthorizationMethodInterceptor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.service.SectionService;
 
+import io.micrometer.core.ipc.http.HttpSender.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -72,7 +74,8 @@ public class SectionController {
     @Operation(summary = "Update Section by Id", description = "Update Section by Id parameter")
     public ResponseEntity<SectionDTO> updateSection(@PathVariable("id") Long id, 
     @RequestBody SectionDTO sectionDTO){
-
+        logger.info("Update Section By Id : {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(this.sectionService.update(id, sectionDTO));
     }
 
 

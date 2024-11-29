@@ -60,8 +60,8 @@ public class SectionService {
             throw new ResourceFound("Section name exist in other Section");
          }
 
-         Section section = this.sectionRepository.save(this.toSection(sectionDTO));
-         return this.toSectionDTO(section);
+         Section section = this.sectionRepository.save(SectionService.toSection(sectionDTO));
+         return SectionService.toSectionDTO(section);
     }
 
     private static Section toSection(SectionDTO sectionDTO){
