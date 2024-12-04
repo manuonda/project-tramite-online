@@ -16,12 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.service.SectionService;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +27,7 @@ import jakarta.validation.Valid;
 
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
-
+import static com.tramite.online.constants.GeneralConstants.ID_IN_PATH;
 
 @RestController
 @RequestMapping("/api/v1/section")
@@ -66,7 +64,7 @@ public class SectionController {
 
     @Operation(summary="Delete Section by Id", description = "Delete Section by Id")
     @ApiResponse(responseCode = "200", description = "Response Code 200")
-    @DeleteMapping("/{id}")
+    @DeleteMapping(ID_IN_PATH)
     public ResponseEntity<String> deleteSection(@PathVariable("id") Long id){
         logger.info("Delete Section by Id : {}", id);
         this.sectionService.delete(id);
@@ -85,14 +83,11 @@ public class SectionController {
 
     @Operation(summary = "Get Section by Id", description = "Get Section by Id")
     @ApiResponse(responseCode = "200", description = "Response Code 200")
-    @GetMapping("/{id}")
+    @GetMapping(ID_IN_PATH)
     public ResponseEntity<SectionDTO> getSectionById(@PathVariable("id")Long id) {
         logger.info("Get Section by Id : {}" ,id);
         return ResponseEntity.status(HttpStatus.OK).body(this.sectionService.getById(id));
     }
-    
 
-
-    
 
 }

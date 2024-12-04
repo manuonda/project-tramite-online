@@ -3,6 +3,7 @@ package com.tramite.online.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,10 @@ import com.tramite.online.repository.SectionRepository;
 
 import lombok.AllArgsConstructor;
 
+import static com.tramite.online.constants.CacheConstants.GET_SECTION_BY_ID;
+import static com.tramite.online.constants.CacheConstants.GET_ALL_SECTIONS;
+
+
 @Service
 @AllArgsConstructor
 public class SectionService {
@@ -28,19 +33,15 @@ public class SectionService {
     private final QuestionRepository questionRepository;
 
 
+
+    @Cacheable(GET_ALL_SECTIONS)
     public PagedResult<SectionDTO> findAll(int page, int size, String sortDirection,SectionDTO sectionDTO){
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         final Sort sort = Sort.by(direction, "name");
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<SectionDTO> pageSections = this.sectionRepository.findAll(pageable)
         .map(SectionService::toSectionDTO);
-     
-
-        // List<Section> sections = this.sectionRepository.findAll();
-        // return sections.stream()
-        //        .map(SectionService::toSectionDTO)
-        //        .toList();
-
+    
         return new PagedResult<>(
         pageSections.getContent(), 
         pageSections.getTotalElements(),
@@ -56,13 +57,13 @@ public class SectionService {
 
     public SectionDTO save(SectionDTO sectionDTO){
         
-        Section section = this.toSection(sectionDTO);
+        Section section = SectionService.toSection(sectionDTO);
         Optional<Section> sectionFindByName = this.sectionRepository.findByName(section.getName());
         if ( sectionFindByName.isPresent()){
             throw new ResourceFound("Section name already exist");
         }
 
-        return this.toSectionDTO(this.sectionRepository.save(section));
+        return SectionService.toSectionDTO(this.sectionRepository.save(section));
     }
 
 
@@ -75,16 +76,27 @@ public class SectionService {
      */
     public SectionDTO update(Long id, SectionDTO sectionDTO){
 
-          this.sectionRepository.findById(id)
+        return  this.sectionRepository.findById(id)
+          .map(existingSection -> {
+
+            Optional<Section> findByName = this.sectionRepository.findByName(sectionDTO.getName());
+            if ( findByName.isPresent() && !findByName.get().getId().equals(sectionDTO.getId())){
+               throw new ResourceFound("Section name exist in other Section");
+            }
+
+            Section section = SectionService.toSection(sectionDTO);
+            section.setId(sectionDTO.getId());
+            return toSectionDTO(this.sectionRepository.save(section));
+          })
           .orElseThrow(()->  new ResourceNotFound("Section not exist by idSection : " + id));
 
-         Optional<Section> findByName = this.sectionRepository.findByName(sectionDTO.getName());
-         if ( findByName.isPresent() && !findByName.get().getId().equals(sectionDTO.getId())){
-            throw new ResourceFound("Section name exist in other Section");
-         }
+        //  Optional<Section> findByName = this.sectionRepository.findByName(sectionDTO.getName());
+        //  if ( findByName.isPresent() && !findByName.get().getId().equals(sectionDTO.getId())){
+        //     throw new ResourceFound("Section name exist in other Section");
+        //  }
 
-         Section section = this.sectionRepository.save(SectionService.toSection(sectionDTO));
-         return SectionService.toSectionDTO(section);
+        //  Section section = this.sectionRepository.save(SectionService.toSection(sectionDTO));
+        //  return SectionService.toSectionDTO(section);
     }
 
 
@@ -100,6 +112,7 @@ public class SectionService {
         this.sectionRepository.save(section);
     }
 
+    @Cacheable(GET_SECTION_BY_ID)
     public SectionDTO getById(Long id){
         Section section  = this.sectionRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFound("Section Not Found by Id : "+ id));
