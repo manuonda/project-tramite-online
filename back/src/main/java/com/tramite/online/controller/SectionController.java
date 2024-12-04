@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.service.SectionService;
@@ -26,11 +27,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
+import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
+
 
 @RestController
 @RequestMapping("/api/v1/section")
 @Tag(name="Section Controller", description = "Section Controller Contains operations CRUD and others operations.")
-
 public class SectionController {
 
 
@@ -45,10 +48,11 @@ public class SectionController {
 
     @GetMapping
     public List<SectionDTO> getAll(
-        @RequestParam(defaultValue = "10") int page,
-        @RequestParam(defaultValue = "10") int size,
+        @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size,
         @RequestBody SectionDTO sectionDTO) {
-        return null;
+         logger.info("Get All pagination {},{}", page, size);
+         return null;
     }
 
     @PostMapping
@@ -77,6 +81,16 @@ public class SectionController {
         logger.info("Update Section By Id : {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(this.sectionService.update(id, sectionDTO));
     }
+
+
+    @Operation(summary = "Get Section by Id", description = "Get Section by Id")
+    @ApiResponse(responseCode = "200", description = "Response Code 200")
+    @GetMapping("/{id}")
+    public ResponseEntity<SectionDTO> getSectionById(@PathVariable("id")Long id) {
+        logger.info("Get Section by Id : {}" ,id);
+        return ResponseEntity.status(HttpStatus.OK).body(this.sectionService.getById(id));
+    }
+    
 
 
     

@@ -3,8 +3,13 @@ package com.tramite.online.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.tramite.online.domain.dto.PagedResult;
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.domain.entity.Section;
 import com.tramite.online.exception.ResourceFound;
@@ -23,11 +28,29 @@ public class SectionService {
     private final QuestionRepository questionRepository;
 
 
-    public List<SectionDTO> findAll(){
-        List<Section> sections = this.sectionRepository.findAll();
-        return sections.stream()
-               .map(SectionService::toSectionDTO)
-               .toList();
+    public PagedResult<SectionDTO> findAll(int page, int size, String sortDirection,SectionDTO sectionDTO){
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        final Sort sort = Sort.by(direction, "name");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<SectionDTO> pageSections = this.sectionRepository.findAll(pageable)
+        .map(SectionService::toSectionDTO);
+     
+
+        // List<Section> sections = this.sectionRepository.findAll();
+        // return sections.stream()
+        //        .map(SectionService::toSectionDTO)
+        //        .toList();
+
+        return new PagedResult<>(
+        pageSections.getContent(), 
+        pageSections.getTotalElements(),
+        pageSections.getNumber(), 
+        pageSections.getTotalPages(), 
+        pageSections.isFirst(), 
+        pageSections.isLast(), 
+        pageSections.hasNext(), 
+        pageSections.hasPrevious()
+        );
     }
 
 
@@ -64,6 +87,26 @@ public class SectionService {
          return SectionService.toSectionDTO(section);
     }
 
+
+    /**
+     * Delete section by id
+     * @param id
+     */
+    public void delete(Long id) {
+        Section section = this.sectionRepository.findById(id)
+        .orElseThrow(() ->  new ResourceNotFound("Section Not Found by id : " + id));
+
+        section.setEnabled(Boolean.FALSE);
+        this.sectionRepository.save(section);
+    }
+
+    public SectionDTO getById(Long id){
+        Section section  = this.sectionRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFound("Section Not Found by Id : "+ id));
+
+        return SectionService.toSectionDTO(section);
+    }
+
     private static Section toSection(SectionDTO sectionDTO){
         Section section = new Section();
         section.setId(sectionDTO.getId());
@@ -84,11 +127,4 @@ public class SectionService {
     }
 
 
-    public void delete(Long id) {
-        Section section = this.sectionRepository.findById(id)
-        .orElseThrow(() ->  new ResourceNotFound("Section "));
-
-        section.setEnabled(Boolean.FALSE);
-        this.sectionRepository.save(section);
-    }
 }
