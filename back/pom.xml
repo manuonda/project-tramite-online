@@ -135,6 +135,13 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
+        <dependency>
+    <groupId>org.instancio</groupId>
+    <artifactId>instancio-core</artifactId>
+    <version>1.0.0</version>
+    <scope>test</scope>
+</dependency>
      
 
 
