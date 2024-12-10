@@ -25,7 +25,8 @@ public class SectionRepositoryTest {
     @DisplayName("Add Section")
     public void givenSection_whenSaveEntity_thenReturnObjectSection(){
         //given
-        section = new 
+        Section section = new Section();
+        
         //when
         //then
     }
