@@ -13,8 +13,8 @@ export class SectionsComponent {
   initializeSection(): Section {
     return{
       id: null,
-      description: '',
-      name: '',
+      description: 'Description',
+      name: 'Title',
       enabled:false,
       sectionType: 'WIZARD'
     }
@@ -25,5 +25,11 @@ export class SectionsComponent {
 
    addSection = () => {
      this.sections.update((sections) => [...sections, this.initializeSection()]);
+   }
+
+   removeSection = ( idSection: number | null ) => {
+
+
+
    }
 }

@@ -8,5 +8,5 @@ import { Section } from '@models/section.interface';
   styleUrl: './card.component.scss'
 })
 export class CardComponent {
-   section = input<Section>();
+    section = input.required<Section>();
 }
