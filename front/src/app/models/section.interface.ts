@@ -1,6 +1,6 @@
 export interface Section {
   id: number | null;
-  name: string;
+  title: string;
   description: string;
   enabled: boolean;
   sectionType: string;

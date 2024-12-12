@@ -1,0 +1,88 @@
+<div class="bg-gray-800 rounded-lg shadow-md mb-6 overflow-hidden text-white">
+  <div class="p-4 bg-gray-700 border-b border-gray-600 cursor-pointer flex items-center justify-between"
+       (click)="toggleExpanded()">
+    <div>
+      @if (isEditing()) {
+        <div (click)="$event.stopPropagation()" class="space-y-2">
+          <input
+            type="text"
+            class="w-full px-2 py-1 bg-gray-600 border border-gray-500 rounded text-white"
+            placeholder="Título de la sección"
+          />
+          <input
+            type="text"
+            class="w-full px-2 py-1 bg-gray-600 border border-gray-500 rounded text-white"
+            placeholder="Descripción de la sección"
+          />
+        </div>
+      } @else {
+        <h3 class="text-lg font-semibold text-white">{{section().title}}</h3>
+        <p class="text-sm text-gray-30">{{section().description}}</p>
+      }
+    </div>
+
+    <!-- acciones buttons -->
+    <div class="flex items-center gap-2">
+      <!-- button disabled -->
+      <button
+        (click)="handleToggleEnabled($event)"
+        [ngClass]="'p-2 rounded-md transition-colors ' + (section().enabled ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700')"
+        [title]="section().enabled ? 'Deshabilitar sección' : 'Habilitar sección'">
+        <i class="fas fa-power-off text-white"></i>
+      </button>
+      <!--  button saved -->
+      <button
+        (click)="handleSaveEdit($event)"
+        [ngClass]="'p-2 rounded-md transition-colors ' + (isEditing() ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700')">
+        @if (isEditing()) {
+          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
+            <path fill-rule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clip-rule="evenodd"/>
+            </svg>
+        } @else {
+          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
+            <path fill-rule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clip-rule="evenodd"/>
+            </svg>
+        }
+      </button>
+
+      @if(!isEditing()) {
+        <span className="text-gray-300">
+         isExpanded :{{isExpanded()}}
+          @if (isExpanded()) {
+           <fa-icon [icon]="IconFaChevronUp" class="h-5 w-5"/>
+        } @else{
+          <fa-icon [icon]="IconFaChevronDown" class="h-5 w-5"/>
+        }
+        </span>
+       }
+          <!-- {isExpanded ? (
+            <ChevronUp className="h-5 w-5" />
+          ) : (
+            <ChevronDown className="h-5 w-5" />
+          )}
+        </span>
+      )} -->
+
+    </div>
+  </div>
+
+  <!-- expand questions -->
+  @if (isExpanded()) {
+    <div class="p-4">
+      <!-- @for (question of section.questions; track question.id) {
+        <question-card
+          [question]="question"
+          (edit)="onEditQuestion(question.id, $event)"
+          (delete)="onDeleteQuestion(question.id)"
+        />
+      } -->
+
+      <button
+
+        class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 flex items-center justify-center gap-2">
+        <i class="fas fa-plus"></i>
+        Agregar pregunta
+      </button>
+    </div>
+  }
+</div>

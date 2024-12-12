@@ -1,10 +1,11 @@
-import { Section } from './../../models/section.interface';
+import { Section } from '@models/section.interface';
 import { Component , signal } from '@angular/core';
-import { CardComponent } from './components/card/card.component';
+import { SectionCardComponent } from '@features/sections/components/card/section.card.component';
+import { Question } from '@models/question.interface';
 
 @Component({
   selector: 'app-sections',
-  imports: [CardComponent],
+  imports: [SectionCardComponent],
   templateUrl: './sections.component.html',
   styleUrl: './sections.component.scss'
 })
@@ -14,7 +15,7 @@ export class SectionsComponent {
     return{
       id: null,
       description: 'Description',
-      name: 'Title',
+      title: 'Title',
       enabled:false,
       sectionType: 'WIZARD'
     }
@@ -27,9 +28,27 @@ export class SectionsComponent {
      this.sections.update((sections) => [...sections, this.initializeSection()]);
    }
 
+   addQuestion = (question: Question) => {
+      console.log("add question");
+   }
+
    removeSection = ( idSection: number | null ) => {
 
+   }
 
+   editQuestion(question:Question){
+
+   }
+
+   deleteQuestion(question: Question){
+
+   }
+
+   editSection(section:Section){
+      this.sections()
+   }
+
+   toggleSection(section: Section){
 
    }
 }
