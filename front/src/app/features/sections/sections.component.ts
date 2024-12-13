@@ -1,6 +1,6 @@
 import { Section } from '@models/section.interface';
 import { Component , signal } from '@angular/core';
-import { SectionCardComponent } from '@features/sections/components/card/section.card.component';
+import { SectionCardComponent } from '@features/sections/components/section-card/section.card.component';
 import { Question } from '@models/question.interface';
 
 @Component({
@@ -45,6 +45,7 @@ export class SectionsComponent {
    }
 
    editSection(section:Section){
+      console.log("handleSaveEdit aqui se ejecuta : ",section);
       this.sections()
    }
 

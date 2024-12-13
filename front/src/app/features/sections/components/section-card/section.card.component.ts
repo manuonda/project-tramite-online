@@ -1,22 +1,28 @@
 import { NgClass } from '@angular/common';
-import { Component, input, output ,model, ModelSignal, signal } from '@angular/core';
+import { Component, input, output ,model, ModelSignal, signal, NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCoffee ,faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faCheck, faCoffee ,faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
 import { Section } from '@models/section.interface';
+import { title } from 'node:process';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'section-card',
-  imports: [NgClass, FontAwesomeModule],
+  imports: [NgClass, FontAwesomeModule , FormsModule],
   templateUrl: './section.card.component.html',
   styleUrl: './section.card.component.scss'
 })
 export class SectionCardComponent {
-    section = model.required<Section>();
+    section = input.required<Section>();
     editSection = output<Section>();
     toggleSection = output<Section>();
+
+    /// icons
     icon = faCoffee;
-    IconFaChevronUp = faChevronUp;
-    IconFaChevronDown = faChevronDown;
+    iconFaChevronUp = faChevronUp;
+    iconFaChevronDown = faChevronDown;
+    iconFaPencil = faPencil;
+    iconFaCheck = faCheck;
 
 
     isExpanded = signal<boolean>(false);
@@ -32,14 +38,22 @@ export class SectionCardComponent {
 
 
 
-    handleSaveEdit(event: MouseEvent) {
-      event.stopPropagation();
+    handleSaveEdit() {
+      console.log("handleSaveEdit");
+         this.isExpanded.set(false);
+         this.isExpanded.update( value => !value);
+
       if (this.isEditing()) {
-        this.section().title = this.editedTitle;
-        this.section().description = this.editedDescription;
+        debugger;
+
+        console.log("t");
+        //this.section().description = this.editedDescription;
+        //this.section().title = this.editedTitle;
+        //this.section
+        console.log(this.section());
         this.editSection.emit(this.section());
       }
-      //this.isEditing.update(!this.isEditing());
+      this.isEditing.update( value => !value);
     }
 
     handleToggleEnabled(event: MouseEvent) {
@@ -50,7 +64,6 @@ export class SectionCardComponent {
     }
 
     onEditSection(){
-       //this.editSection.emit(this.section);
        if(this.isEditing()){
           this.editSection.emit(this.section());
        }
