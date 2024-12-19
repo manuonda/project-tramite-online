@@ -18,23 +18,26 @@ import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.QuestionRepository;
 import com.tramite.online.repository.SectionRepository;
 
-import lombok.AllArgsConstructor;
 
 import static com.tramite.online.constants.CacheConstants.GET_SECTION_BY_ID;
 import static com.tramite.online.constants.CacheConstants.GET_ALL_SECTIONS;
 
 
 @Service
-@AllArgsConstructor
 public class SectionService {
 
     
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
 
+    public SectionService(SectionRepository sectionRepository,
+    QuestionRepository questionRepository){
+        this.sectionRepository = sectionRepository;
+        this.questionRepository = questionRepository;
+    }
 
 
-    @Cacheable(GET_ALL_SECTIONS)
+    //@Cacheable(GET_ALL_SECTIONS)
     public PagedResult<SectionDTO> findAll(int page, int size, String sortDirection,SectionDTO sectionDTO){
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         final Sort sort = Sort.by(direction, "name");
@@ -62,8 +65,8 @@ public class SectionService {
         if ( sectionFindByName.isPresent()){
             throw new ResourceFound("Section name already exist");
         }
-
-        return SectionService.toSectionDTO(this.sectionRepository.save(section));
+        Section sectionSave = this.sectionRepository.save(section);
+        return SectionService.toSectionDTO(sectionSave);
     }
 
 
@@ -85,18 +88,13 @@ public class SectionService {
             }
 
             Section section = SectionService.toSection(sectionDTO);
+            System.out.println(section.getName());
             section.setId(sectionDTO.getId());
-            return toSectionDTO(this.sectionRepository.save(section));
+            Section updateSection = this.sectionRepository.save(section);
+            return toSectionDTO(updateSection);
           })
           .orElseThrow(()->  new ResourceNotFound("Section not exist by idSection : " + id));
 
-        //  Optional<Section> findByName = this.sectionRepository.findByName(sectionDTO.getName());
-        //  if ( findByName.isPresent() && !findByName.get().getId().equals(sectionDTO.getId())){
-        //     throw new ResourceFound("Section name exist in other Section");
-        //  }
-
-        //  Section section = this.sectionRepository.save(SectionService.toSection(sectionDTO));
-        //  return SectionService.toSectionDTO(section);
     }
 
 
@@ -112,15 +110,16 @@ public class SectionService {
         this.sectionRepository.save(section);
     }
 
-    @Cacheable(GET_SECTION_BY_ID)
+    //@Cacheable(GET_SECTION_BY_ID)
     public SectionDTO getById(Long id){
         Section section  = this.sectionRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFound("Section Not Found by Id : "+ id));
 
-        return SectionService.toSectionDTO(section);
+        SectionDTO sectionDTO = SectionService.toSectionDTO(section);
+        return sectionDTO;
     }
 
-    private static Section toSection(SectionDTO sectionDTO){
+    public static Section toSection(SectionDTO sectionDTO){
         Section section = new Section();
         section.setId(sectionDTO.getId());
         section.setName(sectionDTO.getName());
@@ -130,7 +129,7 @@ public class SectionService {
         return section;
     }
 
-    private static SectionDTO toSectionDTO(Section section){
+    public static SectionDTO toSectionDTO(Section section){
         SectionDTO sectionDTO = new SectionDTO();
         sectionDTO.setId(section.getId());
         sectionDTO.setName(section.getName());

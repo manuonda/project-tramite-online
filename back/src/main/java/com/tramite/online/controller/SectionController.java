@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tramite.online.domain.dto.PagedResult;
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.service.SectionService;
 
@@ -27,6 +28,7 @@ import jakarta.validation.Valid;
 
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
+import static com.tramite.online.constants.GeneralConstants.ASC;
 import static com.tramite.online.constants.GeneralConstants.ID_IN_PATH;
 
 @RestController
@@ -45,12 +47,14 @@ public class SectionController {
 
 
     @GetMapping
-    public List<SectionDTO> getAll(
+    public ResponseEntity<PagedResult<SectionDTO>> getAll(
         @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size,
-        @RequestBody SectionDTO sectionDTO) {
+        @RequestParam(defaultValue = ASC) String sorted) {
          logger.info("Get All pagination {},{}", page, size);
-         return null;
+         PagedResult<SectionDTO> rPagedResult = this.sectionService.findAll(page, size, sorted, null);
+
+         return ResponseEntity.status(HttpStatus.OK).body(rPagedResult);
     }
 
     @PostMapping
@@ -86,7 +90,8 @@ public class SectionController {
     @GetMapping(ID_IN_PATH)
     public ResponseEntity<SectionDTO> getSectionById(@PathVariable("id")Long id) {
         logger.info("Get Section by Id : {}" ,id);
-        return ResponseEntity.status(HttpStatus.OK).body(this.sectionService.getById(id));
+        SectionDTO sectionDTO = this.sectionService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(sectionDTO);
     }
 
 

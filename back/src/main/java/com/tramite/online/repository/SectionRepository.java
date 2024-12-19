@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 import com.tramite.online.domain.entity.Section;
 
-public interface SectionRepository  extends JpaRepository<Section, Long>, QueryByExampleExecutor<Section>{
+public interface SectionRepository  extends JpaRepository<Section, Long>{
 
     Optional<Section>  findByName(String name);
 }
