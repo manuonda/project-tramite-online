@@ -1,1 +1,33 @@
-<p>question-card works!</p>
+
+
+<div class="question-card">
+  <div class="header">
+    <div class="drag-handle">
+      <i class="fa-solid fa-grip-vertical"></i>
+    </div>
+    <div class="details">
+      <!-- <i [ngClass]="questionTypeIcons[question().type]" class="icon"></i> -->
+      <h4>{{ question().label }}</h4>
+      @if (question().required) {
+         <span class="required">*</span>
+      }
+
+    </div>
+    <div class="actions">
+      <button (click)="onActionEdit(question().id)" class="edit-btn">
+        <i class="fa-solid fa-edit"></i>
+      </button>
+      <button (click)="onActionDelete(question().id)" class="delete-btn">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+  </div>
+  <p class="type-info">Tipo: {{ question().typeQuestion }}</p>
+  @if (question().options?.length) {
+    <div class="options">
+      @for (option of question().options; track option) {
+        <span  class="option">{{ option }}</span>
+      }
+    </div>
+  }
+</div>

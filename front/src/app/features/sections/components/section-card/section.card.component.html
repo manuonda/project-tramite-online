@@ -6,13 +6,13 @@
         <div (click)="$event.stopPropagation()" class="space-y-2">
           <input
             type="text"
-            [(ngModel)]="this.section().title"
+            [(ngModel)]="section().title"
             class="w-full px-2 py-1 bg-gray-600 border border-gray-500 rounded text-white"
             placeholder="Título de la sección"
           />
           <input
             type="text"
-            [(ngModel)]="this.section().description"
+            [(ngModel)]="section().description"
             class="w-full px-2 py-1 bg-gray-600 border border-gray-500 rounded text-white"
             placeholder="Descripción de la sección"
           />
@@ -60,20 +60,31 @@
   <!-- expand questions -->
   @if (isExpanded()) {
     <div class="p-4">
-      <!-- @for (question of section.questions; track question.id) {
-        <question-card
+      @for (question of section().questions; track question.id) {
+        <question
           [question]="question"
-          (edit)="onEditQuestion(question.id, $event)"
+          (edit)="onEditQuestion(question.id)"
           (delete)="onDeleteQuestion(question.id)"
         />
-      } -->
+      }
 
       <button
-
-        class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 flex items-center justify-center gap-2">
+       (click)="openQuestionModal()"
+      class="mt-4 w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-700 flex items-center justify-center gap-2">
         <i class="fas fa-plus"></i>
         Agregar pregunta
       </button>
     </div>
   }
+
+  @if (isQuestionModalOpen()) {
+
+    <question-modal
+    [isOpen]="isQuestionModalOpen()"
+    (close)="onCloseModal($event)"
+    >
+    </question-modal>
+  }
+
+
 </div>

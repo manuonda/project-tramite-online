@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -77,7 +78,9 @@ public class SectionController {
 
 
 
+    @ApiResponse(responseCode = "200", description = "Response Code 200")
     @Operation(summary = "Update Section by Id", description = "Update Section by Id parameter")
+    @PutMapping(ID_IN_PATH)
     public ResponseEntity<SectionDTO> updateSection(@PathVariable("id") Long id, 
     @RequestBody SectionDTO sectionDTO){
         logger.info("Update Section By Id : {}", id);

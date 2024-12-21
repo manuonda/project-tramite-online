@@ -182,6 +182,8 @@ public class SectionServiceTest {
         verify(sectionRepository).save(any(Section.class));
 
     }
+
+    // TODO: find all sections pagination
     // @Test
     // @DisplayName("Find All Sections")
     // void testFindAll() {
@@ -198,37 +200,5 @@ public class SectionServiceTest {
     //     verify(sectionRepository).findAll(pageable);
     // }
 
-    // @Test
-    // @DisplayName("Get Section By ID")
-    // void testGetById() {
-    //     // given
-    //     section = SectionService.toSection(sectionDTO);
-    //     when(this.sectionRepository.findById(section.getId())).thenReturn(Optional.of(section));
 
-    //     // when
-    //     SectionDTO result = this.service.getById(section.getId());
-
-    //     // then
-    //     Assertions.assertThat(result).isNotNull();
-    //     Assertions.assertThat(result.getName()).isEqualTo(TITLE);
-    //     verify(sectionRepository).findById(section.getId());
-    // }
-
-    // @Test
-    // @DisplayName("Update Section")
-    // void testUpdate() {
-    //     // given
-    //     section = SectionService.toSection(sectionDTO);
-    //     when(this.sectionRepository.findById(section.getId())).thenReturn(Optional.of(section));
-    //     when(this.sectionRepository.save(section)).thenReturn(section);
-
-    //     // when
-    //     SectionDTO result = this.service.update(section.getId(), sectionDTO);
-
-    //     // then
-    //     Assertions.assertThat(result).isNotNull();
-    //     Assertions.assertThat(result.getName()).isEqualTo(TITLE);
-    //     verify(sectionRepository).findById(section.getId());
-    //     verify(sectionRepository).save(any(Section.class));
-    // }
 }

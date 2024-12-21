@@ -17,7 +17,8 @@ export class SectionsComponent {
       description: 'Description',
       title: 'Title',
       enabled:false,
-      sectionType: 'WIZARD'
+      sectionType: 'WIZARD',
+      questions:[]
     }
   }
 
@@ -46,7 +47,6 @@ export class SectionsComponent {
 
    editSection(section:Section){
       console.log("handleSaveEdit aqui se ejecuta : ",section);
-      this.sections()
    }
 
    toggleSection(section: Section){

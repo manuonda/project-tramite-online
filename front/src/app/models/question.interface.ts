@@ -1,7 +1,7 @@
 export interface Question {
-    id: string;
-    type: string;
-    label: string;
-    required: boolean;
+  id: number;
+  typeQuestion: 'text' | 'number' | 'select' | 'radio' | 'checkbox';
+  label: string;
+  required: boolean;
+  options?: string[];
 }
-

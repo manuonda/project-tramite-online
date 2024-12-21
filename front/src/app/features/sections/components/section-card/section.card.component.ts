@@ -6,9 +6,13 @@ import { Section } from '@models/section.interface';
 import { title } from 'node:process';
 import { FormsModule } from '@angular/forms';
 
+import { QuestionCardComponent } from '@features/sections/components/question-card/question-card.component';
+import { QuestionModalComponent } from '@features/questions/question-modal/question-modal.component';
+
+
 @Component({
   selector: 'section-card',
-  imports: [NgClass, FontAwesomeModule , FormsModule],
+  imports: [NgClass, FontAwesomeModule , FormsModule, QuestionCardComponent, QuestionModalComponent],
   templateUrl: './section.card.component.html',
   styleUrl: './section.card.component.scss'
 })
@@ -16,6 +20,8 @@ export class SectionCardComponent {
     section = input.required<Section>();
     editSection = output<Section>();
     toggleSection = output<Section>();
+    isQuestionModalOpen = signal<boolean>(false);
+
 
     /// icons
     icon = faCoffee;
@@ -44,13 +50,6 @@ export class SectionCardComponent {
          this.isExpanded.update( value => !value);
 
       if (this.isEditing()) {
-        debugger;
-
-        console.log("t");
-        //this.section().description = this.editedDescription;
-        //this.section().title = this.editedTitle;
-        //this.section
-        console.log(this.section());
         this.editSection.emit(this.section());
       }
       this.isEditing.update( value => !value);
@@ -76,4 +75,23 @@ export class SectionCardComponent {
          this.isExpanded.update( value => !value);
       }
     }
+
+    onEditQuestion(id:number){
+      console.log("onEditQuestion : "+ id)
+    }
+
+    onDeleteQuestion(id: number){
+      console.log("onDeleteQuestion: "+ id)
+    }
+
+    openQuestionModal(){
+      this.isQuestionModalOpen.update(value => !value);
+    }
+
+    onCloseModal(value:boolean){
+      console.log("value obutengiod: ", value);
+
+    }
+
+
 }
