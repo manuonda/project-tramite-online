@@ -24,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nimbusds.jose.util.Resource;
+import com.tramite.online.ContainerConfiguration;
 import com.tramite.online.domain.dto.PagedResult;
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.domain.entity.Section;
@@ -32,8 +33,7 @@ import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.SectionRepository;
 
-
-
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
+@Import(ContainerConfiguration.class)
 public class SectionServiceTest {
 
     private static final String TITLE = "section one";
