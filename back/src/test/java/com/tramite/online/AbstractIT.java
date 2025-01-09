@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 
 import io.restassured.RestAssured;
 
-@Import(ContainerConfiguration.class)
+@Import(TestContainerConfiguration.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIT {
 
