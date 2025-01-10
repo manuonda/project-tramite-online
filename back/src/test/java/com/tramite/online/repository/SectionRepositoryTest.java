@@ -1,5 +1,6 @@
 package com.tramite.online.repository;
 
+import com.tramite.online.TestContainerConfiguration;
 import com.tramite.online.domain.entity.Section;
 import com.tramite.online.domain.type.SectionType;
 
@@ -8,21 +9,16 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.junit.jupiter.Testcontainers;
-
+import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@TestPropertySource(properties = {
-        "spring.test.database.replace=none",
-        "spring.datasource.url=jdbc:tc:postgresql:16-alpine:///db"
-})
-//@Testcontainers
+@Import(TestContainerConfiguration.class)
+// @TestPropertySource(properties = {
+//         "spring.test.database.replace=none",
+//         "spring.datasource.url=jdbc:tc:postgresql:16-alpine:///db"
+// })
 public class SectionRepositoryTest {
 
 

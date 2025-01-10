@@ -24,6 +24,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.nimbusds.jose.util.Resource;
+import com.tramite.online.TestContainerConfiguration;
+import com.tramite.online.domain.dto.PagedResult;
 import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.domain.entity.Section;
 import com.tramite.online.domain.type.SectionType;
@@ -31,7 +33,12 @@ import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.SectionRepository;
 
-import static org.mockito.Mockito.verify;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
+@Import(TestContainerConfiguration.class)
 public class SectionServiceTest {
 
     private static final String TITLE = "section one";
@@ -183,22 +191,21 @@ public class SectionServiceTest {
 
     }
 
-    // TODO: find all sections pagination
-    // @Test
-    // @DisplayName("Find All Sections")
-    // void testFindAll() {
-    //     // given
-    //     Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name"));
-    //     Page<Section> page = Page.empty(pageable);
-    //     when(this.sectionRepository.findAll(pageable)).thenReturn(page);
-
-    //     // when
-    //     PagedResult<SectionDTO> result = this.service.findAll(0, 10, "ASC", sectionDTO);
-
-    //     // then
-    //     Assertions.assertThat(result).isNotNull();
-    //     verify(sectionRepository).findAll(pageable);
-    // }
+      @Test
+      @DisplayName("Find All Sections")
+      void testFindAll() {
+          // given
+          Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "name"));
+          Page<Section> page = Page.empty(pageable);
+          when(this.sectionRepository.findAll(pageable)).thenReturn(page);
+  
+          // when
+          PagedResult<SectionDTO> result = this.service.findAll(0, 10, "ASC", sectionDTO);
+  
+          // then
+          Assertions.assertThat(result).isNotNull();
+          verify(sectionRepository).findAll(pageable);
+      }
 
 
 }

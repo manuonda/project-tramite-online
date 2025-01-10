@@ -2,7 +2,6 @@ package com.tramite.online.config;
 
 import java.time.Duration;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
