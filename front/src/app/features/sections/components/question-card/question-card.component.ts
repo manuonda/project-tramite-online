@@ -2,6 +2,12 @@ import { Component, input, output } from '@angular/core';
 import { Question } from '@models/question.interface';
 import { faPencil, faCheck, faCoffee ,faChevronUp, faChevronDown} from '@fortawesome/free-solid-svg-icons';
 
+export interface QuestionModalProps{
+  isOpen: boolean;
+  onClose: () => void;
+
+}
+
 
 @Component({
   selector: 'question',

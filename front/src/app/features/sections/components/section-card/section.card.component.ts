@@ -90,7 +90,7 @@ export class SectionCardComponent {
 
     onCloseModal(value:boolean){
       console.log("value obutengiod: ", value);
-
+      this.isQuestionModalOpen.update( value => !value);
     }
 
 
