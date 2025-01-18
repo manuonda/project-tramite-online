@@ -121,6 +121,8 @@ public class SectionService {
         return sectionDTO;
     }
 
+    https://github.com/springframeworkguru/spring-6-rest-mvc/blob/178-test-with-docker-compose/src/main/java/guru/springframework/spring6restmvc/services/BeerOrderServiceJPA.java
+
     public static Section toSection(SectionDTO sectionDTO){
         Section section = new Section();
         section.setId(sectionDTO.getId());
