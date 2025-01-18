@@ -1,6 +1,8 @@
 package com.tramite.online.service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,9 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.tramite.online.domain.dto.PagedResult;
-import com.tramite.online.domain.dto.SectionDTO;
+import com.tramite.online.domain.entity.Question;
 import com.tramite.online.domain.entity.Section;
+import com.tramite.online.domain.models.PagedResult;
+import com.tramite.online.domain.models.SectionDTO;
 import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.QuestionRepository;
@@ -63,6 +66,7 @@ public class SectionService {
         if ( sectionFindByName.isPresent()){
             throw new ResourceFound("Section name already exist");
         }
+        
         Section sectionSave = this.sectionRepository.save(section);
         return SectionService.toSectionDTO(sectionSave);
     }
@@ -123,6 +127,9 @@ public class SectionService {
         section.setName(sectionDTO.getName());
         section.setEnabled(sectionDTO.getEnabled());
         section.setDescription(sectionDTO.getDescription());
+         
+        Set<Question> newQuestions = new HashSet<>();
+        sectionDTO.getQuestions().fo
         
         return section;
     }

@@ -1,4 +1,4 @@
-package com.tramite.online.domain.dto;
+package com.tramite.online.domain.models;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

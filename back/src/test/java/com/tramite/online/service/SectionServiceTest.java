@@ -1,9 +1,5 @@
 package com.tramite.online.service;
 
-import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.DynamicTest.stream;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,7 +8,6 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.glassfish.jaxb.core.v2.model.core.ID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,11 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.nimbusds.jose.util.Resource;
 import com.tramite.online.TestContainerConfiguration;
-import com.tramite.online.domain.dto.PagedResult;
-import com.tramite.online.domain.dto.SectionDTO;
 import com.tramite.online.domain.entity.Section;
+import com.tramite.online.domain.models.PagedResult;
+import com.tramite.online.domain.models.SectionDTO;
 import com.tramite.online.domain.type.SectionType;
 import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;

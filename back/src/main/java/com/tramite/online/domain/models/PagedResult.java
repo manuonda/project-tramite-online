@@ -1,4 +1,4 @@
-package com.tramite.online.domain.dto;
+package com.tramite.online.domain.models;
 
 import java.util.List;
 

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.method.MethodSecurityBeanDefinitionParser.SecuredAuthorizationMethodInterceptor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tramite.online.domain.dto.PagedResult;
-import com.tramite.online.domain.dto.SectionDTO;
+import com.tramite.online.domain.models.PagedResult;
+import com.tramite.online.domain.models.SectionDTO;
 import com.tramite.online.service.SectionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -90,7 +91,7 @@ public class SectionController {
 
     @Operation(summary = "Get Section by Id", description = "Get Section by Id")
     @ApiResponse(responseCode = "200", description = "Response Code 200")
-    @GetMapping(ID_IN_PATH)
+    @GetMapping(value = ID_IN_PATH , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SectionDTO> getSectionById(@PathVariable("id")Long id) {
         logger.info("Get Section by Id : {}" ,id);
         SectionDTO sectionDTO = this.sectionService.getById(id);
