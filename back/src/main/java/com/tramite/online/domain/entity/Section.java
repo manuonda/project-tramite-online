@@ -49,7 +49,7 @@ public class Section extends Auditable<String>{
     @Enumerated(EnumType.STRING)
     private SectionType sectionType;
 
-    @OneToMany(mappedBy = "section", fetch= FetchType.LAZY)
+    @OneToMany(mappedBy = "section", fetch= FetchType.LAZY , orphanRemoval = true)
     private Set<Question> questions;
 
 }

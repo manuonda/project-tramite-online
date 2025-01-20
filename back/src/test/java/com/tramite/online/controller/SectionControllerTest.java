@@ -1,6 +1,5 @@
 package com.tramite.online.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.tramite.online.TestContainerConfiguration;
@@ -15,12 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.test.web.servlet.assertj.MvcTestResult;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.assertArg;
 
 //https://fullstackcode.dev/2025/01/08/exploring-the-assertj-integration-and-new-mockmvctester-class-in-spring-boot-3-4/
 //https://github.com/springframeworkguru/spring-6-rest-mvc/blob/178-test-with-docker-compose/src/main/java/guru/springframework/spring6restmvc/services/BeerOrderServiceJPA.java

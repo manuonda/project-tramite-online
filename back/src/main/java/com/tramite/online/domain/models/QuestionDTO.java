@@ -12,6 +12,7 @@ public class QuestionDTO {
     private Long id;
     private String name;
     private String description;
+    
     @Enumerated(EnumType.STRING)
     private String questionType;
 

@@ -13,18 +13,23 @@ import org.springframework.stereotype.Service;
 import com.tramite.online.domain.entity.Question;
 import com.tramite.online.domain.entity.Section;
 import com.tramite.online.domain.models.PagedResult;
+import com.tramite.online.domain.models.QuestionDTO;
 import com.tramite.online.domain.models.SectionDTO;
+import com.tramite.online.domain.type.QuestionType;
 import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.QuestionRepository;
 import com.tramite.online.repository.SectionRepository;
 
+import ch.qos.logback.classic.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import static com.tramite.online.constants.CacheConstants.GET_SECTION_BY_ID;
 import static com.tramite.online.constants.CacheConstants.GET_ALL_SECTIONS;
 
 
 @Service
+@Slf4j
 public class SectionService {
 
     
@@ -105,6 +110,7 @@ public class SectionService {
      * @param id
      */
     public void delete(Long id) {
+        log.debug("Delete by id {}", id);
         Section section = this.sectionRepository.findById(id)
         .orElseThrow(() ->  new ResourceNotFound("Section Not Found by id : " + id));
 
@@ -121,7 +127,7 @@ public class SectionService {
         return sectionDTO;
     }
 
-    https://github.com/springframeworkguru/spring-6-rest-mvc/blob/178-test-with-docker-compose/src/main/java/guru/springframework/spring6restmvc/services/BeerOrderServiceJPA.java
+    //https://github.com/springframeworkguru/spring-6-rest-mvc/blob/178-test-with-docker-compose/src/main/java/guru/springframework/spring6restmvc/services/BeerOrderServiceJPA.java
 
     public static Section toSection(SectionDTO sectionDTO){
         Section section = new Section();
@@ -131,7 +137,11 @@ public class SectionService {
         section.setDescription(sectionDTO.getDescription());
          
         Set<Question> newQuestions = new HashSet<>();
-        sectionDTO.getQuestions().fo
+        sectionDTO.getQuestions().forEach(questionDTO -> {
+            log.debug("Adding questionDTO ",questionDTO.getId());
+            newQuestions.add(toQuestion(questionDTO));
+        });
+        section.setQuestions(newQuestions);
         
         return section;
     }
@@ -143,6 +153,22 @@ public class SectionService {
         sectionDTO.setDescription(section.getDescription());
         sectionDTO.setEnabled(section.getEnabled());
         return sectionDTO;
+    }
+
+    public static Question toQuestion(QuestionDTO questionDTO) {
+        Question question = new Question();
+        question.setId(questionDTO.getId());
+        question.setName(questionDTO.getName());
+        question.setQuestionType(QuestionType.valueOf(questionDTO.getQuestionType()));
+        return question;
+    }
+    
+    public static QuestionDTO toQuestionDTO(Question question) {
+        QuestionDTO dto = new QuestionDTO();
+        dto.setId(question.getId());
+        dto.setName(question.getName());
+        dto.setQuestionType(question.getQuestionType().name());
+        return dto;
     }
 
 

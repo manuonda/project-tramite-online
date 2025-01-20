@@ -29,11 +29,12 @@ public class Question  extends  Auditable<String>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="text", nullable=false, length=50)
-    private String text;
+    @Column(name="name", nullable=false, length=50)
+    private String name;
 
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
+
 
     @ManyToOne
     @JoinColumn(name="section_id", nullable=false)

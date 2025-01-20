@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS sections (
 -- Tabla de preguntas
 CREATE TABLE IF NOT EXISTS questions (
      id BIGSERIAL PRIMARY KEY,            -- ID auto-incremental
-    text VARCHAR(50) NOT NULL,           -- Texto de la pregunta
+    name VARCHAR(50) NOT NULL,           -- Texto de la pregunta
     question_type VARCHAR(255),          -- Tipo de pregunta (enumeración)
     section_id BIGINT,                   -- Relación con la tabla sections
     created_by VARCHAR(255) NOT NULL,    -- Usuario que creó la pregunta
