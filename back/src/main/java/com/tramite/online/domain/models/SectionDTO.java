@@ -2,12 +2,10 @@ package com.tramite.online.domain.models;
 
 import java.util.Set;
 
-import com.tramite.online.domain.entity.Question;
 import com.tramite.online.domain.type.SectionType;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.QueryTimeoutException;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

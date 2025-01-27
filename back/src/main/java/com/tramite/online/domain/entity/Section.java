@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -51,5 +52,9 @@ public class Section extends Auditable<String>{
 
     @OneToMany(mappedBy = "section", fetch= FetchType.LAZY , orphanRemoval = true)
     private Set<Question> questions;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="form_id", nullable = false)
+    private Form form;
 
 }

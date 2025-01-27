@@ -130,20 +130,21 @@ public class SectionService {
         Section section = new Section();
         if ( sectionDTO.getId() != null && sectionDTO.getId().equals(Long.valueOf(0))) {
             section.setId(null);
+        } else {
+            section.setId(sectionDTO.getId());
         }
-        section.setId(sectionDTO.getId());
         section.setName(sectionDTO.getName());
         section.setEnabled(sectionDTO.getEnabled());
         section.setDescription(sectionDTO.getDescription());
          
         Set<Question> newQuestions = new HashSet<>();
-        // sectionDTO.getQuestions().forEach(questionDTO -> {
-        //     log.debug("Adding questionDTO ",questionDTO.getId());
-        //     Question question =toQuestion(questionDTO);
-        //     question.setSection(section);
-        //     newQuestions.add(question);
-        // });
-        // section.setQuestions(newQuestions);
+        sectionDTO.getQuestions().forEach(questionDTO -> {
+            log.debug("Adding questionDTO ",questionDTO.getId());
+            Question question =toQuestion(questionDTO);
+            question.setSection(section);
+            newQuestions.add(question);
+        });
+        section.setQuestions(newQuestions);
         
         return section;
     }
@@ -159,7 +160,11 @@ public class SectionService {
 
     public static Question toQuestion(QuestionDTO questionDTO) {
         Question question = new Question();
-        question.setId(questionDTO.getId());
+        if ( questionDTO.getId() != null && questionDTO.getId().equals(Long.valueOf(0))) {
+            questionDTO.setId(null);
+        } else {
+            question.setId(questionDTO.getId());
+        }
         question.setName(questionDTO.getName());
         question.setQuestionType(QuestionType.valueOf(questionDTO.getQuestionType()));
         return question;
