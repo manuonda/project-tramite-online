@@ -1,7 +1,7 @@
 -- Tabla de secciones (similar a la de preguntas)
-create sequence section_id_seq start with 1 increment by 50;
+create sequence section_id_seq start with 1 increment by 1;
 CREATE TABLE IF NOT EXISTS sections (
-    id bigint DEFAULT nextval('section_id_seq') not null primary key, -- ID auto-incremental
+    id  BIGSERIAL PRIMARY key, -- ID auto-incremental
     name VARCHAR(50) NOT NULL, -- Nombre de la sección
     description VARCHAR(100), -- Descripción de la sección (opcional)
     enabled BOOLEAN NOT NULL DEFAULT TRUE, -- Campo booleano que indica si está habilitado

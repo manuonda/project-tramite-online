@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tramite.online.domain.entity.Question;
 import com.tramite.online.domain.entity.Section;
@@ -21,11 +22,7 @@ import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.QuestionRepository;
 import com.tramite.online.repository.SectionRepository;
 
-import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
-
-import static com.tramite.online.constants.CacheConstants.GET_SECTION_BY_ID;
-import static com.tramite.online.constants.CacheConstants.GET_ALL_SECTIONS;
 
 
 @Service
@@ -64,6 +61,7 @@ public class SectionService {
     }
 
 
+    @Transactional
     public SectionDTO save(SectionDTO sectionDTO){
         
         Section section = SectionService.toSection(sectionDTO);
@@ -95,7 +93,6 @@ public class SectionService {
             }
 
             Section section = SectionService.toSection(sectionDTO);
-            System.out.println(section.getName());
             section.setId(sectionDTO.getId());
             Section updateSection = this.sectionRepository.save(section);
             return toSectionDTO(updateSection);
@@ -131,17 +128,22 @@ public class SectionService {
 
     public static Section toSection(SectionDTO sectionDTO){
         Section section = new Section();
+        if ( sectionDTO.getId() != null && sectionDTO.getId().equals(Long.valueOf(0))) {
+            section.setId(null);
+        }
         section.setId(sectionDTO.getId());
         section.setName(sectionDTO.getName());
         section.setEnabled(sectionDTO.getEnabled());
         section.setDescription(sectionDTO.getDescription());
          
         Set<Question> newQuestions = new HashSet<>();
-        sectionDTO.getQuestions().forEach(questionDTO -> {
-            log.debug("Adding questionDTO ",questionDTO.getId());
-            newQuestions.add(toQuestion(questionDTO));
-        });
-        section.setQuestions(newQuestions);
+        // sectionDTO.getQuestions().forEach(questionDTO -> {
+        //     log.debug("Adding questionDTO ",questionDTO.getId());
+        //     Question question =toQuestion(questionDTO);
+        //     question.setSection(section);
+        //     newQuestions.add(question);
+        // });
+        // section.setQuestions(newQuestions);
         
         return section;
     }

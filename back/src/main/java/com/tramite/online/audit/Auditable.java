@@ -41,6 +41,6 @@ public class Auditable<U> {
     @LastModifiedDate
     @Column(name="last_modified_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModidiedDate;
+    private Date lastModifiedDate;
 
 }
