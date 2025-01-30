@@ -18,7 +18,7 @@ import lombok.Data;
 @Entity(name = "forms")
 @Data
 @Builder
-public class Form extends Auditable<String>{
+public class FormUser extends Auditable<String>{
     
     @Id
     @GeneratedValue( strategy =  GenerationType.IDENTITY)

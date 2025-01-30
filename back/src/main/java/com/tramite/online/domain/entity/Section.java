@@ -55,6 +55,6 @@ public class Section extends Auditable<String>{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="form_id", nullable = false)
-    private Form form;
+    private FormUser form;
 
 }
