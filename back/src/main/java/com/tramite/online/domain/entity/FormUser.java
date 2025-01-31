@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 
 
-@Entity(name = "forms")
+@Entity(name = "form_users")
 @Data
 @Builder
 public class FormUser extends Auditable<String>{

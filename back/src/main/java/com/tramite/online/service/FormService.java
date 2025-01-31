@@ -5,11 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.tramite.online.domain.entity.Form;
-import com.tramite.online.domain.models.FormDTO;
+import com.tramite.online.domain.entity.FormUser;
+import com.tramite.online.domain.models.FormUserDTO;
 import com.tramite.online.domain.models.PagedResult;
 import com.tramite.online.repository.FormRepository;
 
@@ -25,12 +24,12 @@ public class FormService {
 
 
 
-    public PagedResult<FormDTO> findAll(int page, int size, 
-    String sortDirection,FormDTO formDTO ){
+    public PagedResult<FormUserDTO> findAll(int page, int size, 
+    String sortDirection,FormUserDTO formDTO ){
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         final Sort sort = Sort.by(direction, "name");
         Pageable pageable = PageRequest.of(page,size,sort);
-        Page<FormDTO> pageForm =  this.formRepository.findAll(pageable)
+        Page<FormUserDTO> pageForm =  this.formRepository.findAll(pageable)
         .ma()
 
         return new PagedResult<>(
@@ -39,8 +38,13 @@ public class FormService {
     } 
 
 
-    private static FormDTO toFormDTO(Form form){
+    private static FormUserDTO toFormDTO(FormUser entity){
+        FormUserDTO formUserDTO = new FormUserDTO();
+        formUserDTO.setId(entity.getId());
+        formUserDTO.setName(entity.getName());
+        formUserDTO.setDescription(entity.getDescription());
         
+        return formUserDTO;
     }
     
 }
