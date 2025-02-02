@@ -11,13 +11,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity(name = "form_users")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class FormUser extends Auditable<String>{
     
     @Id

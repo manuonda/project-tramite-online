@@ -1,6 +1,9 @@
 package com.tramite.online.service;
 
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tramite.online.domain.entity.FormUser;
 import com.tramite.online.domain.models.FormUserDTO;
 import com.tramite.online.domain.models.PagedResult;
+import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.repository.FormRepository;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class FormService {
+public class FormUserService {
 
     private final FormRepository formRepository;
 
@@ -30,21 +34,52 @@ public class FormService {
         final Sort sort = Sort.by(direction, "name");
         Pageable pageable = PageRequest.of(page,size,sort);
         Page<FormUserDTO> pageForm =  this.formRepository.findAll(pageable)
-        .ma()
+        .map(FormUserService::toFormDTO);
 
         return new PagedResult<>(
-            pageForm.getContent, 
-            pageForm.g, page, page, false, false, false, false)
+            pageForm.getContent(),
+            pageForm.getTotalElements(),
+            pageForm.getNumber(),
+            pageForm.getTotalPages(),
+            pageForm.isFirst(),
+            pageForm.isLast(),
+            pageForm.hasNext(),
+            pageForm.hasPrevious()
+            );
     } 
 
+    @Transactional
+    public FormUserDTO save(FormUserDTO formDTO){
+        FormUser formUser = FormUserService.toEntity(formDTO);
+        Optional<FormUser> formUserOptional = this.formRepository.findByName(formDTO.getName());
+        if (formUserOptional.isPresent()){
+            throw new ResourceFound("Form User already exists");
+        }
+        formUser = toEntity(formDTO);
+        formUser = this.formRepository.save(formUser);
+        return toFormDTO(formUser);
+    }
 
-    private static FormUserDTO toFormDTO(FormUser entity){
+
+    @Transactional
+    public FormUserDTO update(FormUserDTO dto, Long id){
+        return this.formUser
+    }
+    public  static FormUserDTO toFormDTO(FormUser entity){
         FormUserDTO formUserDTO = new FormUserDTO();
         formUserDTO.setId(entity.getId());
         formUserDTO.setName(entity.getName());
         formUserDTO.setDescription(entity.getDescription());
         
         return formUserDTO;
+    }
+
+    public static FormUser toEntity(FormUserDTO dto){
+        FormUser formUser = new FormUser();
+        formUser.setId(dto.getId());
+        formUser.setName(dto.getName());
+        formUser.setDescription(dto.getDescription());
+        return formUser;
     }
     
 }
