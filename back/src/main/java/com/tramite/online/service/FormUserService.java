@@ -14,7 +14,8 @@ import com.tramite.online.domain.entity.FormUser;
 import com.tramite.online.domain.models.FormUserDTO;
 import com.tramite.online.domain.models.PagedResult;
 import com.tramite.online.exception.ResourceFound;
-import com.tramite.online.repository.FormRepository;
+import com.tramite.online.exception.ResourceNotFound;
+import com.tramite.online.repository.FormUserRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FormUserService {
 
-    private final FormRepository formRepository;
+    private final FormUserRepository formUserRepository;
 
 
 
@@ -33,7 +34,7 @@ public class FormUserService {
         Sort.Direction direction = Sort.Direction.fromString(sortDirection);
         final Sort sort = Sort.by(direction, "name");
         Pageable pageable = PageRequest.of(page,size,sort);
-        Page<FormUserDTO> pageForm =  this.formRepository.findAll(pageable)
+        Page<FormUserDTO> pageForm =  this.formUserRepository.findAll(pageable)
         .map(FormUserService::toFormDTO);
 
         return new PagedResult<>(
@@ -51,19 +52,25 @@ public class FormUserService {
     @Transactional
     public FormUserDTO save(FormUserDTO formDTO){
         FormUser formUser = FormUserService.toEntity(formDTO);
-        Optional<FormUser> formUserOptional = this.formRepository.findByName(formDTO.getName());
+        Optional<FormUser> formUserOptional = this.formUserRepository.findByName(formDTO.getName());
         if (formUserOptional.isPresent()){
             throw new ResourceFound("Form User already exists");
         }
         formUser = toEntity(formDTO);
-        formUser = this.formRepository.save(formUser);
+        formUser = this.formUserRepository.save(formUser);
         return toFormDTO(formUser);
     }
 
 
     @Transactional
     public FormUserDTO update(FormUserDTO dto, Long id){
-        return this.formUser
+        return this.formUserRepository.findById(id)
+        .map(existFormUser  -> {
+            
+            return null;
+        })
+        .orElseThrow(()-> new ResourceNotFound("Form User Not Exist by Id : {}", id));
+
     }
     public  static FormUserDTO toFormDTO(FormUser entity){
         FormUserDTO formUserDTO = new FormUserDTO();
