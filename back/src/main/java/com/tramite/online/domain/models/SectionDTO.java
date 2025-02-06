@@ -16,6 +16,7 @@ import lombok.Setter;
 public class SectionDTO {
 
      private Long id;
+     
      @NotNull
      @NotEmpty(message = "Not empty Name")
      private String name;

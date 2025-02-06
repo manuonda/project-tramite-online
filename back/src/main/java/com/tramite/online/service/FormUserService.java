@@ -16,6 +16,7 @@ import com.tramite.online.domain.models.PagedResult;
 import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.FormUserRepository;
+import com.tramite.online.service.validator.ValidatorFormUser;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FormUserService {
 
     private final FormUserRepository formUserRepository;
-
+    private final ValidatorFormUser validatorFormUser;
 
 
     public PagedResult<FormUserDTO> findAll(int page, int size, 
@@ -64,14 +65,18 @@ public class FormUserService {
 
     @Transactional
     public FormUserDTO update(FormUserDTO dto, Long id){
+        this.validatorFormUser.validate(dto);
+
         return this.formUserRepository.findById(id)
         .map(existFormUser  -> {
-            
-            return null;
+            FormUser formUser = FormUserService.toEntity(dto);
+            formUser.setId(id);
+            FormUser update = this.formUserRepository.save(formUser);
+            return toFormDTO(update);
         })
-        .orElseThrow(()-> new ResourceNotFound("Form User Not Exist by Id : {}", id));
-
+        .orElseThrow(()-> new ResourceNotFound("Form User Not Exist by Id : " +  id));
     }
+
     public  static FormUserDTO toFormDTO(FormUser entity){
         FormUserDTO formUserDTO = new FormUserDTO();
         formUserDTO.setId(entity.getId());
@@ -86,6 +91,8 @@ public class FormUserService {
         formUser.setId(dto.getId());
         formUser.setName(dto.getName());
         formUser.setDescription(dto.getDescription());
+        Set<
+        
         return formUser;
     }
     
