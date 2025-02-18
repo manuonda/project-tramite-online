@@ -20,16 +20,23 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "sections")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-@Builder
+@ToString(exclude = "questions")
+@EqualsAndHashCode(exclude = "questions")
 public class Section extends Auditable<String>{
 
     @Id

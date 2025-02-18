@@ -4,24 +4,35 @@ import java.util.Set;
 
 import com.tramite.online.audit.Auditable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
-@Entity(name = "form_users")
-@Data
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "form_users")
+@ToString(exclude = "sections")
+@EqualsAndHashCode(exclude = "sections")
 public class FormUser extends Auditable<String>{
     
     @Id
@@ -34,7 +45,7 @@ public class FormUser extends Auditable<String>{
 
     private String description;
 
-    @OneToMany(mappedBy = "form")
+    @OneToMany(mappedBy = "form" , cascade =  CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Section> sections;
     
 }

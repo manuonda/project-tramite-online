@@ -2,7 +2,9 @@ package com.tramite.online.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tramite.online.domain.entity.FormUser;
+import com.tramite.online.domain.entity.Section;
 import com.tramite.online.domain.models.FormUserDTO;
 import com.tramite.online.domain.models.PagedResult;
 import com.tramite.online.exception.ResourceFound;
@@ -28,6 +31,7 @@ public class FormUserService {
 
     private final FormUserRepository formUserRepository;
     private final ValidatorFormUser validatorFormUser;
+    private final SectionService sectionService;
 
 
     public PagedResult<FormUserDTO> findAll(int page, int size, 
@@ -91,8 +95,14 @@ public class FormUserService {
         formUser.setId(dto.getId());
         formUser.setName(dto.getName());
         formUser.setDescription(dto.getDescription());
-        Set<
-        
+        Set<Section> sections = new HashSet<>();
+        dto.getSections().forEach(sectionDTO -> {
+            log.debug("Adding SectionDTO ", sectionDTO.getId());
+            Section section = SectionService.toSection(sectionDTO);
+            section.setForm(formUser);
+            sections.add(section);
+        });
+        formUser.setSections(sections);
         return formUser;
     }
     
