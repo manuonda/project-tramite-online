@@ -49,6 +49,8 @@ public class SectionController {
 
 
     @GetMapping
+    @Operation(summary = "Get Pagination Section" ,
+    description = "")
     public ResponseEntity<PagedResult<SectionDTO>> getAll(
         @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size,
