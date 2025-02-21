@@ -54,7 +54,7 @@ public class SectionServiceTest {
     SectionDTO sectionDTO;
 
     @BeforeEach
-    public void init() {
+    void init() {
         sectionDTO = new SectionDTO();
         sectionDTO.setName(TITLE);
         sectionDTO.setDescription("Description one");
@@ -71,7 +71,7 @@ public class SectionServiceTest {
 
     @Test
     @DisplayName("Save Section")
-    public void givenObjectSection_whenSaveObject_thenReturnObject() {
+    void givenObjectSection_whenSaveObject_thenReturnObject() {
         // given
         section = SectionService.toSection(sectionDTO);
         when(this.sectionRepository.findByName(TITLE)).thenReturn(Optional.empty());
@@ -128,7 +128,7 @@ public class SectionServiceTest {
 
     @Test
     @DisplayName("Get Section Not Found by Id")
-    public void givenIdSection_whenFindById_ReturnObjectEmpty(){
+    void givenIdSection_whenFindById_ReturnObjectEmpty(){
        
         when(this.sectionRepository.findById(anyLong())).thenReturn(Optional.empty());
         org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFound.class, () -> {
@@ -139,7 +139,7 @@ public class SectionServiceTest {
     }
     @Test
     @DisplayName("Should find section by id")
-    public void givenSection_whenFindById_thenReturnObject() {
+    void givenSection_whenFindById_thenReturnObject() {
         // given
         Long id = 1L;
         section.setId(id);
@@ -157,7 +157,7 @@ public class SectionServiceTest {
 
     @Test
     @DisplayName("Section Test Update")
-    public void givenSection_whenUpdate_thenReturnObject(){
+    void givenSection_whenUpdate_thenReturnObject(){
         //given
         Long id = 1L;
         section.setId(1L);
