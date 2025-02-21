@@ -81,6 +81,14 @@ public class FormUserService {
         .orElseThrow(()-> new ResourceNotFound("Form User Not Exist by Id : " +  id));
     }
 
+    
+    public FormUserDTO getById(Long id){
+        log.info("Find User by Id {}" , id);
+        return this.formUserRepository.findById(id)
+        .map( FormUserService::toFormDTO)
+        .orElseThrow(() ->  new ResourceNotFound("Form User Not found by id " + id ));
+    }
+
     public  static FormUserDTO toFormDTO(FormUser entity){
         FormUserDTO formUserDTO = new FormUserDTO();
         formUserDTO.setId(entity.getId());

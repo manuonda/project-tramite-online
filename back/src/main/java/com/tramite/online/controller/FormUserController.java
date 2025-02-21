@@ -16,56 +16,40 @@ import lombok.extern.slf4j.Slf4j;
 import static com.tramite.online.constants.GeneralConstants.ASC;
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
+import static com.tramite.online.constants.GeneralConstants.ID_IN_PATH;
 
-import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 //https://blog.jetbrains.com/idea/2025/02/database-migrations-in-the-real-world/
 
 @RestController
 @RequestMapping("/api/v1/forms")
-@Tag(
-    name="Rest Controller Form",
-    description ="Rest Controllers for forms"
-)
+@Tag(name = "Rest Controller Form", description = "Rest Controllers for forms")
 @Slf4j
 public class FormUserController {
 
     private final FormUserService formUserService;
 
-
-    public FormUserController( FormUserService formUserService){
+    public FormUserController(FormUserService formUserService) {
         this.formUserService = formUserService;
     }
 
     @GetMapping
-    @Operation(
-        summary = "Get all forms",
-        description = "Get all forms with pagination"
-    )
-    @ApiResponse(
-        responseCode ="200",
-        description = "Return all forms"
-    )
-    public ResponseEntity<PagedResult<FormUserDTO>> getAll(
-      @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
-      @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size,
-      @RequestParam(defaultValue = ASC) String sorted
-    ){
+    @Operation(summary = "Get all forms", description = "Get all forms with pagination")
+    @ApiResponse(responseCode = "200", description = "Return all forms")
+    public ResponseEntity<PagedResult<FormUserDTO>> getAll(@RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
+            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size, @RequestParam(defaultValue = ASC) String sorted) {
         log.info("Get all pagination {},{}", page, size);
         PagedResult<FormUserDTO> pagedResult = this.formUserService.findAll(page, size, sorted, null);
         return ResponseEntity.status(HttpStatus.OK).body(pagedResult);
     }
-
 
     @PostMapping
     @Operation(
@@ -76,14 +60,19 @@ public class FormUserController {
         responseCode = "201",
         description = "Create a new form user"
     )
-    public ResponseEntity<FormUserDTO>  createFormUser(@Valid @RequestBody FormUserDTO formUserDTO){ {
+    public ResponseEntity<FormUserDTO>  createFormUser(@Valid @RequestBody FormUserDTO formUserDTO){ 
         log.info("Create form user dto {}", formUserDTO);
         FormUserDTO saveUserDTO = this.formUserService.save(formUserDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(saveUserDTO);
     }
 
-    
+    @Operation(summary = "Get Form By Id", description = "Get Form By Id")
+    @ApiResponse(responseCode = "200", description = "Get Form By Id")
+    @GetMapping(value = ID_IN_PATH, produces=MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FormUserDTO> getFormById(@PathVariable("id") Long id) {
+        log.info("Get by Id Form :{}", id);
+        FormUserDTO formUserDTO = this.formUserService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(formUserDTO);
+    }
 
-   
-    
 }

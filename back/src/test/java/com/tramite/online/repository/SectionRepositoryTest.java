@@ -46,7 +46,7 @@ public class SectionRepositoryTest {
     @DisplayName("Test Update Section")
     public void givenSection_whenUpdate_thenReturnObject(){
         //given
-        Section section = new Section(null, "name","description one",true, SectionType.SECTION_WIZARD, null);
+        Section section = new Section(null, "name","description one",true, SectionType.SECTION_WIZARD, null, null);
         Section sectionSave = this.sectionRepository.save(section);
        
         //when 

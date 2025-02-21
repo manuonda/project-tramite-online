@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestControllerAdvice
+@Slf4j
 public class GlobalException extends ResponseEntityExceptionHandler{
 
 
@@ -28,17 +30,11 @@ public class GlobalException extends ResponseEntityExceptionHandler{
   private static final URI BAD_REQUEST_TYPE = URI.create("https://api.bookstore.com/errors/bad-request");
   private static final String SERVICE_NAME = "order-service";
    
-  /**
-     * Logger
-     */
-    private Logger logger = LoggerFactory.getLogger(GlobalException.class);
-
-
-
+  
 
     @ExceptionHandler(ResourceNotFound.class)
     ResponseEntity<ProblemDetail>  handleResourceNotFound(ResourceNotFound ex){
-      logger.info("HandleResurceNotFound : {}", ex.getMessage());
+      log.info("HandleResurceNotFound : {}", ex.getMessage());
       ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, 
       ex.getMessage());
       problemDetail.setTitle(ex.getMessage());
@@ -57,7 +53,7 @@ public class GlobalException extends ResponseEntityExceptionHandler{
 /******  19dc3ba1-7f7d-44ce-b600-4d9f9b973c1b  *******/
     @ExceptionHandler(ResourceFound.class)
     ResponseEntity<ProblemDetail> handleResourceFound(ResourceFound ex){
-      logger.info("HandlerResourceFound  {}", ex.getMessage());
+      log.info("HandlerResourceFound  {}", ex.getMessage());
       ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FOUND,
       ex.getMessage());
       problemDetail.setTitle(ex.getMessage());
@@ -79,7 +75,7 @@ public class GlobalException extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        logger.info("HandlerArgumentNotValid  {}", ex.getMessage());
+        log.info("HandlerArgumentNotValid  {}", ex.getMessage());
         
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
         problemDetail.setTitle("Validation Error");
