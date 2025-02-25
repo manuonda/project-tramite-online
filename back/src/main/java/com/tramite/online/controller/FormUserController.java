@@ -18,13 +18,17 @@ import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
 import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
 import static com.tramite.online.constants.GeneralConstants.ID_IN_PATH;
 
+import javax.print.attribute.standard.Media;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 //https://blog.jetbrains.com/idea/2025/02/database-migrations-in-the-real-world/
@@ -74,5 +78,27 @@ public class FormUserController {
         FormUserDTO formUserDTO = this.formUserService.getById(id);
         return ResponseEntity.status(HttpStatus.OK).body(formUserDTO);
     }
+
+    @Operation(summary ="Update Form",
+    description = "Update Form by Id")
+    @ApiResponse(responseCode = "200", description="Update Form by Id")
+    @PutMapping(value = ID_IN_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FormUserDTO> updateFormById(@PathVariable("id") Long id,
+    @RequestBody FormUserDTO dto){
+       log.info("Update User by Id : {} {}", id, dto);
+        FormUserDTO formUserDTO =  this.formUserService.update(dto, id);
+        return ResponseEntity.status(HttpStatus.OK).body(formUserDTO);
+    }
+
+    @Operation(summary = "Delete by Id" , description = "Delete by id Form User")
+    @ApiResponse(responseCode = "200", description="Response None ")
+    @DeleteMapping(ID_IN_PATH)
+    public ResponseEntity<?> deleteById(@PathVariable("id") Long id){
+        return null;
+    }
+
+
+
+
 
 }
