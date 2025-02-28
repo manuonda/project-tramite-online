@@ -1,0 +1,61 @@
+server:
+    port: ${PORT:8080}
+
+spring:
+    application:
+        name: project-tramite-online
+    datasource:
+        url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+        username: ${DB_USERNAME:postgres}
+        password: ${DB_PASSWORD:postgres}
+    jpa:
+        open-in-view: false
+        show-sql: true
+    security:
+        user:
+            name: dgarcia
+            password: 123456
+        oauth2:
+         client:
+          registration:
+            google:
+              client-id: ${CLIENT_ID_GOOGLE}
+              client-secret: ${CLIENT_SECRET_GOOGLE}
+              scope:
+                - email
+                - profile
+            
+
+application:
+    page-size: 10
+
+management:
+    info:
+        git:
+            mode: full
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    metrics:
+        tags:
+            application: ${spring.application.name}
+    tracing:
+        enabled: false
+        sampling:
+            probability: 1.0
+
+
+# Configuration logger
+# logging:
+#   structured:
+#     format:
+#       console: ecs
+
+# Configuration redis
+# spring:
+#   redis:
+#     host: localhost
+#     port: 6379
+#     password: 
+#     database: 0
