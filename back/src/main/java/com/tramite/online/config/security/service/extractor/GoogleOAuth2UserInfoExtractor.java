@@ -24,9 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractorStrategy{@Override
+public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractorStrategy{
     
-
+    @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {
        log.info("ExtractUserInfo from : ", oAuth2User);
        return UserInfo.builder()
