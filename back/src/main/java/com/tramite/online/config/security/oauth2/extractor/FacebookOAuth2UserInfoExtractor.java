@@ -1,5 +1,5 @@
 
-package com.tramite.online.config.security.service.extractor;
+package com.tramite.online.config.security.oauth2.extractor;
 
 import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.Map;
@@ -9,22 +9,22 @@ import org.springframework.stereotype.Component;
 
 import com.tramite.online.config.security.model.TypeProvider;
 import com.tramite.online.config.security.model.UserInfo;
-import com.tramite.online.config.security.service.OAuth2UserInfoExtractor;
-import com.tramite.online.config.security.service.OAuth2UserInfoExtractorStrategy;
+import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2UserInfoExtractor;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Extracts user information from Facebook's OAuth2User object and maps 
  * it to {@link UserInfo}.
- * Implements {@link OAuth2UserInfoExtractorStrategy} for Facebook-specific logic.
+ * Implements {@link OAuth2UserInfoExtractor} for Facebook-specific logic.
  * @author  dgarcia
  * @version 1.0 
  * @since   20/3/2025
  */
 @Component
 @Slf4j
-public class FacebookOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor{
+public class FacebookOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInfoExtractor{
     
     @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {

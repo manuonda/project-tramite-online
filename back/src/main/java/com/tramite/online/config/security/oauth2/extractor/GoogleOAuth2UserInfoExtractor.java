@@ -11,7 +11,7 @@
  * Author: dgarcia
  * Dathe:  13/03/2025
  */
-package com.tramite.online.config.security.service.extractor;
+package com.tramite.online.config.security.oauth2.extractor;
 
 import java.lang.ProcessBuilder.Redirect.Type;
 
@@ -20,15 +20,15 @@ import org.springframework.stereotype.Component;
 
 import com.tramite.online.config.security.model.TypeProvider;
 import com.tramite.online.config.security.model.UserInfo;
-import com.tramite.online.config.security.service.OAuth2UserInfoExtractor;
-import com.tramite.online.config.security.service.OAuth2UserInfoExtractorStrategy;
+import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2UserInfoExtractor;
 
 import lombok.extern.slf4j.Slf4j;
 
 
 @Component
 @Slf4j
-public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor{
+public class GoogleOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInfoExtractor{
     
     @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {

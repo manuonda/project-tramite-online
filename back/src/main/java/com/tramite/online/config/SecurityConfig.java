@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.tramite.online.config.security.service.CustomOAuth2UserService;
+import com.tramite.online.config.security.oauth2.service.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 

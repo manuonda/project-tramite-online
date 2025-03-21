@@ -15,7 +15,7 @@
  * - @RequiredArgsConstructor: Generates a constructor with required arguments 
  *   (final fields) for dependency injection.
  */
-package com.tramite.online.config.security.service;
+package com.tramite.online.config.security.oauth2.service;
 
 import java.util.Map;
 
@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
-    private final Map<String, OAuth2UserInfoExtractorStrategy> userInfoExtractors;
+    private final Map<String, OAuth2UserInfoExtractor> userInfoExtractors;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -49,7 +49,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getClientId();
         log.info("OAuth2 login attempt with provider: {}", registrationId);
         
-        OAuth2UserInfoExtractorStrategy extractor = userInfoExtractors.get(registrationId);
+        OAuth2UserInfoExtractor extractor = userInfoExtractors.get(registrationId);
         return super.loadUser(userRequest);
     }
 

@@ -1,4 +1,4 @@
-package com.tramite.online.config.security.service;
+package com.tramite.online.config.security.oauth2.factory;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,9 +7,10 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.tramite.online.config.security.model.TypeProvider;
-import com.tramite.online.config.security.service.extractor.FacebookOAuth2UserInfoExtractor;
-import com.tramite.online.config.security.service.extractor.GitHubOAuth2UserInfoExtractor;
-import com.tramite.online.config.security.service.extractor.GoogleOAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.extractor.FacebookOAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.extractor.GitHubOAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.extractor.GoogleOAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class OAuth2UserInfoExtractorFactory {
-   private final Map<String, OAuth2UserInfoExtractorStrategy> extractors;
+   private final Map<String, OAuth2UserInfoExtractor> extractors;
   
    public OAuth2UserInfoExtractorFactory(
     GoogleOAuth2UserInfoExtractor googleExtractor,
@@ -43,7 +44,7 @@ public class OAuth2UserInfoExtractorFactory {
     FacebookOAuth2UserInfoExtractor facebookExtractor
    ){
     
-    Map<String, OAuth2UserInfoExtractorStrategy> extractorsMap = new HashMap<>();
+    Map<String, OAuth2UserInfoExtractor> extractorsMap = new HashMap<>();
     extractorsMap.put(TypeProvider.FACEBOOK.getValue(), facebookExtractor);
     extractorsMap.put(TypeProvider.GOOGLE.getValue(), googleExtractor);
     extractorsMap.put(TypeProvider.GITHUB.getValue(), gitHubExtractor);
@@ -53,11 +54,11 @@ public class OAuth2UserInfoExtractorFactory {
 
    }
 
-   public OAuth2UserInfoExtractorStrategy getExtractor(String registrationId){
+   public OAuth2UserInfoExtractor getExtractor(String registrationId){
     return extractors.get(registrationId);
    }
 
-   public Map<String, OAuth2UserInfoExtractorStrategy>  getAllExtractors(){
+   public Map<String, OAuth2UserInfoExtractor>  getAllExtractors(){
     return extractors;
    }
 
