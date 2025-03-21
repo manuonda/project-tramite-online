@@ -41,6 +41,7 @@ public class Question  extends  Auditable<String>{
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="question_type")
     private QuestionType questionType;
 
 

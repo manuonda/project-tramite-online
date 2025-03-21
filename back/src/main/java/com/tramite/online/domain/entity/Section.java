@@ -55,6 +55,7 @@ public class Section extends Auditable<String>{
     private Boolean enabled;
 
     @Enumerated(EnumType.STRING)
+    @Column(name="section_type")
     private SectionType sectionType;
 
     @OneToMany(mappedBy = "section", fetch= FetchType.LAZY , orphanRemoval = true)

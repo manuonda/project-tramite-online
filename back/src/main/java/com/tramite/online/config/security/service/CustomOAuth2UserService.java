@@ -17,6 +17,8 @@
  */
 package com.tramite.online.config.security.service;
 
+import java.util.Map;
+
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -27,19 +29,27 @@ import org.springframework.stereotype.Service;
 import com.tramite.online.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final Map<String, OAuth2UserInfoExtractorStrategy> userInfoExtractors;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-       
+        log.info("OAuth2User loadUser : {}", userRequest);
         OAuth2User oAuth2User = super.loadUser(userRequest);
+
+        //Obtener el ID de registro para determinar el proveedor 
+        String registrationId = userRequest.getClientRegistration().getClientId();
+        log.info("OAuth2 login attempt with provider: {}", registrationId);
         
+        OAuth2UserInfoExtractorStrategy extractor = userInfoExtractors.get(registrationId);
         return super.loadUser(userRequest);
     }
 
