@@ -35,6 +35,7 @@ public class Question  extends  Auditable<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_question")
     private Long id;
 
     @Column(name="name", nullable=false, length=50)

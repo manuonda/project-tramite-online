@@ -44,6 +44,7 @@ public class Section extends Auditable<String>{
     generator="section_id_generator")
     @SequenceGenerator(name="section_id_generator" ,
     sequenceName="section_id_seq", allocationSize=1)
+    @Column(name="id_section")
     private Long id;
 
     @Column(name="name", nullable=false , length=50)

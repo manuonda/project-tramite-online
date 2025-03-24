@@ -37,6 +37,7 @@ public class User extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id_user")
     private Long id;
 
     @NotBlank(message = "Not Empty User Name")

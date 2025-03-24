@@ -5,6 +5,7 @@ import java.util.Set;
 import com.tramite.online.audit.Auditable;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +39,7 @@ public class FormUser extends Auditable<String>{
     
     @Id
     @GeneratedValue( strategy =  GenerationType.IDENTITY)
+    @Column(name="id_form_user")
     private Long id;
 
     @NotNull(message ="Name is required")
