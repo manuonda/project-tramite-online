@@ -9,9 +9,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.tramite.online.config.security.model.UserInfo;
-import com.tramite.online.config.security.oauth2.factory.OAuth2UserInfoExtractorFactoryAdvanced;
+import com.tramite.online.config.security.oauth2.factory.OAuth2UserInfoExtractorFactory;
 import com.tramite.online.domain.entity.User;
 import com.tramite.online.repository.UserRepository;
+import com.tramite.online.service.UserManagementService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,12 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserRepository userRepository;
-    private final OAuth2UserInfoExtractorFactoryAdvanced extractorFactory;
+    private final OAuth2UserInfoExtractorFactory extractorFactory;
+    private final UserManagementService userService;
 
-    public CustomOAuth2UserService(UserRepository userRepository, OAuth2UserInfoExtractorFactoryAdvanced extractorFactory) {
-        this.userRepository = userRepository;
+    public CustomOAuth2UserService(UserManagementService userService, OAuth2UserInfoExtractorFactory extractorFactory) {
         this.extractorFactory = extractorFactory;
+        this.userService = userService;
         log.info("Injected userInfoExtractors: {}", extractorFactory.getAllExtractors().keySet()); // Agregar este log
     }
 
@@ -58,25 +59,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         UserInfo userInfo = extractor.extractUserInfo(oAuth2User);
         log.info("Extracted user info : {}", userInfo);
 
+        this.userService.processOAuthUser(userInfo);
         return oAuth2User;
     }
-
-    private void saveUsuario(UserInfo userInfo ){
-        Optional<User> findUser = this.userRepository.findByEmailAndProvider(userInfo.getEmail() , userInfo.getProvider().getValue());
-        if (findUser.isPresent()){
-             
-        }
-        
-    }
-
-    private User mapUserInfoToUser(UserInfo userInfo){
-
-        return User.builder()
-        .userName(userInfo.getName())
-        .email(userInfo.getEmail())
-        .provider(userInfo.getProvider())
-        .providerId(userInfo.getProviderId())
-        .build();
-    }
+  
 
 }

@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class OAuth2UserInfoExtractorFactoryAdvanced {
+public class OAuth2UserInfoExtractorFactory {
 
     private final Map<String, ProviderAwareOAuth2UserInfoExtractor> extractors;
 
-    public OAuth2UserInfoExtractorFactoryAdvanced(List<ProviderAwareOAuth2UserInfoExtractor> extractorsList) {
+    public OAuth2UserInfoExtractorFactory(List<ProviderAwareOAuth2UserInfoExtractor> extractorsList) {
         Map<String, ProviderAwareOAuth2UserInfoExtractor> extractorsMap = new HashMap<>();
         
         for (ProviderAwareOAuth2UserInfoExtractor extractor : extractorsList) {

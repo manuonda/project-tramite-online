@@ -3,14 +3,15 @@ CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     user_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    provider VARCHAR(50),
     password VARCHAR(255),
+    provider_id VARCHAR(255),
+    provider_type VARCHAR(100),
     
     -- Campos de auditoría (asumiendo que Auditable<String> contiene estos campos)
-    created_date TIMESTAMP,
-    modified_date TIMESTAMP,
-    created_by VARCHAR(255),
-    modified_by VARCHAR(255)
+    created_by VARCHAR(255) NOT NULL,    -- Usuario que creó la pregunta
+    created_date TIMESTAMP NOT NULL,     -- Fecha de creación
+    last_modified_by VARCHAR(255),       -- Usuario que modificó la pregunta por última vez
+    last_modified_date TIMESTAMP
 );
 
 -- Añadir índice para búsquedas rápidas por email
