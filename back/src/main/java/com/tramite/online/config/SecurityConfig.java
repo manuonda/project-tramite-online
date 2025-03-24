@@ -30,8 +30,9 @@ public class SecurityConfig {
             .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
             .anyRequest().authenticated();
             
-        }).httpBasic(Customizer.withDefaults())
-        .formLogin(Customizer.withDefaults())
+        })
+        //.httpBasic(Customizer.withDefaults())
+        //.formLogin(Customizer.withDefaults())
         .oauth2Login(oauth2 ->
            oauth2.userInfoEndpoint(userInfo ->
            userInfo.userService(customOAuth2UserService))

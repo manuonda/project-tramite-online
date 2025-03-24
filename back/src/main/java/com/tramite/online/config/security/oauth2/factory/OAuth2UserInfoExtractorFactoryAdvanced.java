@@ -1,26 +1,15 @@
 
 package com.tramite.online.config.security.oauth2.factory;
 
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.annotations.SelectBeforeUpdate;
-import org.springframework.stereotype.Component;
-
-import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
-
-import lombok.extern.slf4j.Slf4j;
-
-package com.tramite.online.config.security.service;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
-import com.tramite.online.config.security.model.TypeProvider;
-import com.tramite.online.config.security.service.extractor.OAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
+import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2UserInfoExtractor;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,15 +17,17 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OAuth2UserInfoExtractorFactoryAdvanced {
 
-    private final Map<String, OAuth2UserInfoExtractorStrategy> extractors;
+    private final Map<String, ProviderAwareOAuth2UserInfoExtractor> extractors;
 
-    public OAuth2UserInfoExtractorFactory(List<OAuth2UserInfoExtractorStrategy> extractorsList) {
-        Map<String, OAuth2UserInfoExtractorStrategy> extractorsMap = new HashMap<>();
+    public OAuth2UserInfoExtractorFactoryAdvanced(List<ProviderAwareOAuth2UserInfoExtractor> extractorsList) {
+        Map<String, ProviderAwareOAuth2UserInfoExtractor> extractorsMap = new HashMap<>();
         
-        for (OAuth2UserInfoExtractorStrategy extractor : extractorsList) {
+        for (ProviderAwareOAuth2UserInfoExtractor extractor : extractorsList) {
             if (extractor instanceof OAuth2UserInfoExtractor) {
-                OAuth2UserInfoExtractor typedExtractor = (OAuth2UserInfoExtractor) extractor;
-                extractorsMap.put(typedExtractor.getProviderType().getValue(), extractor);
+                ProviderAwareOAuth2UserInfoExtractor typedExtractor = (ProviderAwareOAuth2UserInfoExtractor) extractor;
+                String providerValue = typedExtractor.getProviderType().getValue();
+                extractorsMap.put(providerValue, extractor);
+                log.info("Registered extractor for provider : {}", providerValue );
             }
         }
         
@@ -44,11 +35,11 @@ public class OAuth2UserInfoExtractorFactoryAdvanced {
         log.info("OAuth2UserInfoExtractors initialized with providers: {}", extractors.keySet());
     }
 
-    public OAuth2UserInfoExtractorStrategy getExtractor(String registrationId) {
+    public ProviderAwareOAuth2UserInfoExtractor getExtractor(String registrationId) {
         return extractors.get(registrationId);
     }
     
-    public Map<String, OAuth2UserInfoExtractorStrategy> getAllExtractors() {
+    public Map<String, ProviderAwareOAuth2UserInfoExtractor> getAllExtractors() {
         return extractors;
     }
 }

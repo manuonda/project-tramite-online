@@ -3,6 +3,8 @@ package com.tramite.online.domain.entity;
 import java.util.Set;
 
 import com.tramite.online.audit.Auditable;
+import com.tramite.online.config.security.model.TypeProvider;
+import com.tramite.online.domain.type.QuestionType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,7 +49,12 @@ public class User extends Auditable<String>{
 
 
     @Enumerated(EnumType.STRING)
-    private String provider; // google, facebook, local
+    @Column(name="provider_type")
+    private TypeProvider provider;
+
+
+    @Column(name ="provider_id")
+    private String providerId;
 
     private String password;
 

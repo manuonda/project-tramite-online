@@ -13,14 +13,11 @@
  */
 package com.tramite.online.config.security.oauth2.extractor;
 
-import java.lang.ProcessBuilder.Redirect.Type;
-
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import com.tramite.online.config.security.model.TypeProvider;
 import com.tramite.online.config.security.model.UserInfo;
-import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
 import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2UserInfoExtractor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +31,7 @@ public class GoogleOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInf
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {
        log.info("Extract User info from Google OAuthUser : ", oAuth2User);
        return UserInfo.builder()
-       .id(oAuth2User.getAttribute("sub"))
+       .providerId(oAuth2User.getAttribute("sub"))
        .name(oAuth2User.getAttribute("name"))
        .email(oAuth2User.getAttribute("email"))
        .picture(oAuth2User.getAttribute("picture"))

@@ -4,6 +4,7 @@ server:
 spring:
     application:
         name: project-tramite-online
+        page-size: 10
     datasource:
         url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
         username: ${DB_USERNAME:postgres}
@@ -19,12 +20,14 @@ spring:
          client:
           registration:
             google:
-              client-id: ${CLIENT_ID_GOOGLE}
-              client-secret: ${CLIENT_SECRET_GOOGLE}
+              client-id: ${GOOGLE_CLIENT_ID:Ov23liSxDfcnj6N3FF5J}
+              client-secret: ${GOOGLE_CLIENT_SECRET:9fb8f322d3d310eb01185f933153a5cee9228cc8}
               scope:
                 - email
                 - profile
-            
+            github:
+              client-id: ${GITHUB_CLIENT_ID:Ov23liSxDfcnj6N3FF5J}
+              client-secret: ${GITHUB_CLIENT_SECRET:9fb8f322d3d310eb01185f933153a5cee9228cc8}
 
 application:
     page-size: 10

@@ -1,7 +1,6 @@
 
 package com.tramite.online.config.security.oauth2.extractor;
 
-import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.Map;
 
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -29,10 +28,8 @@ public class FacebookOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserI
     @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {
         log.info("Extracting user info from Facebook OAuth2User: {} ", oAuth2User);
-        String id = oAuth2User.getAttribute("id");
-        String email = oAuth2User.getAttribute("email");
-        String name = oAuth2User.getAttribute("name");
-        
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+         
         //Perfil image facebook 
         String imageUrl = null; 
         Map<String, Object> pictureObj = oAuth2User.getAttribute("picture");
@@ -44,9 +41,9 @@ public class FacebookOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserI
 
         }
         return UserInfo.builder()
-        .id(id)
-        .name(email)
-        .name(name)
+        .providerId((String) attributes.get("id"))
+        .email((String) attributes.get("email"))
+        .name((String) attributes.get("name"))
         .picture(imageUrl)
         .provider(TypeProvider.FACEBOOK)
         .build();

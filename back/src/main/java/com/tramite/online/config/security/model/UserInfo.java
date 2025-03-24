@@ -23,4 +23,5 @@ public class UserInfo {
     private String email;
     private String picture;
     private TypeProvider provider;
+    private String providerId;
 }

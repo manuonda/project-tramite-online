@@ -1,14 +1,15 @@
 package com.tramite.online.controller;
 
-import java.util.List;
+import static com.tramite.online.constants.GeneralConstants.ASC;
+import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
+import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
+import static com.tramite.online.constants.GeneralConstants.ID_IN_PATH;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.method.MethodSecurityBeanDefinitionParser.SecuredAuthorizationMethodInterceptor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,11 +28,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-
-import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_NUMBER;
-import static com.tramite.online.constants.GeneralConstants.DEFAULT_PAGE_SIZE;
-import static com.tramite.online.constants.GeneralConstants.ASC;
-import static com.tramite.online.constants.GeneralConstants.ID_IN_PATH;
 
 @RestController
 @RequestMapping("/api/v1/section")

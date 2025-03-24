@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @Slf4j
-public class GlobalException extends ResponseEntityExceptionHandler{
+public class GlobalErroHandler extends ResponseEntityExceptionHandler{
 
 
   private static final URI NOT_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/not-found");
@@ -42,14 +42,7 @@ public class GlobalException extends ResponseEntityExceptionHandler{
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
     }
 
-/*************  ✨ Codeium Command ⭐  *************/
-    /**
-     * Handler for ResourceFound exceptions.
-     * 
-     * @param ex ResourceFound exception
-     * @return ResponseEntity with ProblemDetail
-     */
-/******  19dc3ba1-7f7d-44ce-b600-4d9f9b973c1b  *******/
+
     @ExceptionHandler(ResourceFound.class)
     ResponseEntity<ProblemDetail> handleResourceFound(ResourceFound ex){
       log.info("HandlerResourceFound  {}", ex.getMessage());
