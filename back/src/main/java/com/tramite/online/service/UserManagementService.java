@@ -54,7 +54,8 @@ public class UserManagementService {
             log.info("User not existing by Provider {} and IdProvider {}", userInfo.getProviderId() , userInfo.getProvider().getValue());
             user = this.mapUserInfoToUser(userInfo);
         }
-         this.userRepository.save(user);
+        
+        this.userRepository.save(user);
     }
 
 

@@ -10,3 +10,7 @@ Patron strategy : https://www.arquitecturajava.com/java-strategy-pattern-herenci
 
 Arquitectura  Hexagonal:
 https://josealopez.dev/blog/authentication-with-spring-security-and-jwt
+
+
+OAuth2:
+https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-2/
