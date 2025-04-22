@@ -13,6 +13,12 @@ import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2User
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Factory class for managing and providing instances of  {@link ProviderAwareOAuth2UserInfoExtractor}.
+ * Initializes and registers extractors for different OAuth2 providers, 
+ * ensuring efficient retrieval based on provider type. 
+ */
+
 @Component
 @Slf4j
 public class OAuth2UserInfoExtractorFactory {

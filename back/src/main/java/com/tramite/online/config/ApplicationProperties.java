@@ -9,7 +9,9 @@ import jakarta.validation.constraints.Min;
 public record ApplicationProperties(
     @DefaultValue("10")
     @Min(1)
-    int pageSize
+    int pageSize,
+    String jwtSecret,
+    long jwtExpiration
 ) {
 
 }

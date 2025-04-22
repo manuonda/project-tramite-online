@@ -1,18 +1,12 @@
 package com.tramite.online.config.security.oauth2.service;
 
-import java.util.Optional;
-
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.tramite.online.config.security.model.UserInfo;
 import com.tramite.online.config.security.oauth2.factory.OAuth2UserInfoExtractorFactory;
-import com.tramite.online.domain.entity.User;
-import com.tramite.online.repository.UserRepository;
-import com.tramite.online.service.UserManagementService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,11 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final OAuth2UserInfoExtractorFactory extractorFactory;
-    private final UserManagementService userService;
+  // private final UserManagementService userService;
 
-    public CustomOAuth2UserService(UserManagementService userService, OAuth2UserInfoExtractorFactory extractorFactory) {
+    public CustomOAuth2UserService(
+        //UserManagementService userService, 
+        OAuth2UserInfoExtractorFactory extractorFactory) {
         this.extractorFactory = extractorFactory;
-        this.userService = userService;
+       // this.userService = userService;
         log.info("Injected userInfoExtractors: {}", extractorFactory.getAllExtractors().keySet()); // Agregar este log
     }
 
@@ -56,10 +52,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("Authentication method not supported" + registrationId);
         }
 
-        UserInfo userInfo = extractor.extractUserInfo(oAuth2User);
-        log.info("Extracted user info : {}", userInfo);
+        // UserInfo userInfo = extractor.extractUserInfo(oAuth2User);
+        // log.info("Extracted user info : {}", userInfo);
 
-        this.userService.processOAuthUser(userInfo);
+        // this.userService.processOAuthUser(userInfo);
         return oAuth2User;
     }
   

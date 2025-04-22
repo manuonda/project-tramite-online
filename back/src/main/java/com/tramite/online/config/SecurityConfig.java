@@ -18,7 +18,7 @@ public class SecurityConfig {
 
 
     private final CustomOAuth2UserService customOAuth2UserService;
-
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
@@ -35,7 +35,9 @@ public class SecurityConfig {
         //.formLogin(Customizer.withDefaults())
         .oauth2Login(oauth2 ->
            oauth2.userInfoEndpoint(userInfo ->
-           userInfo.userService(customOAuth2UserService))
+           userInfo.userService(customOAuth2UserService
+           ))
+           .successHandler(oAuth2AuthenticationSuccessHandler)
           )
         .logout( l -> l.logoutSuccessUrl("/login"));
         
