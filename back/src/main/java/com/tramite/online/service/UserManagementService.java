@@ -3,30 +3,29 @@ package com.tramite.online.service;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.tramite.online.config.security.model.UserInfo;
 import com.tramite.online.domain.entity.User;
 import com.tramite.online.repository.UserRepository;
-
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import  org.slf4j.LoggerFactory;
 
 
 /**
- * Service class responsible for managing user-related operations, 
- * particularly handling user information obtained from OAuth2 providers.
- * This includes saving or updating user details in the database 
- * based on the pr
-
+ * Service for managing users, focusing on saving or updating 
+ * user data from OAuth2 providers.
  */
 
 @Service
-@AllArgsConstructor
-@Slf4j
 public class UserManagementService {
 
     private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(UserManagementService.class);
+
+    public UserManagementService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Function that save userInfo from 
@@ -34,7 +33,7 @@ public class UserManagementService {
      * @param userInfo
      */
     public void processOAuthUser(UserInfo userInfo){
-        log.info("Saving user from OAuth2 : {}",userInfo);
+        logger.info("Saving user from OAuth2 : {}",userInfo);
 
         Optional<User> existingUser = this.userRepository.findByProviderAndProviderId(userInfo.getProvider(), 
         userInfo.getProviderId());
@@ -45,13 +44,13 @@ public class UserManagementService {
 
         User user;
         if (existingUser.isPresent()){
-            log.info("User find {}",existingUser.get());
+            logger.info("User find {}",existingUser.get());
             user = existingUser.get();
             user.setEmail(userInfo.getEmail());
             user.setUserName(userInfo.getName());
 
         } else {
-            log.info("User not existing by Provider {} and IdProvider {}", userInfo.getProviderId() , userInfo.getProvider().getValue());
+            logger.info("User not existing by Provider {} and IdProvider {}", userInfo.getProviderId() , userInfo.getProvider().getValue());
             user = this.mapUserInfoToUser(userInfo);
         }
         
@@ -61,12 +60,12 @@ public class UserManagementService {
 
     private User mapUserInfoToUser(UserInfo userInfo){
 
-        return User.builder()
-        .userName(userInfo.getName())
-        .email(userInfo.getEmail())
-        .provider(userInfo.getProvider())
-        .providerId(userInfo.getProviderId())
-        .build();
+        User user = new User();
+        user.setUserName(userInfo.getName());
+        user.setEmail(userInfo.getEmail());
+        user.setProvider(userInfo.getProvider());
+        user.setProviderId(userInfo.getProviderId());
+        return user;
     }
 
 }
