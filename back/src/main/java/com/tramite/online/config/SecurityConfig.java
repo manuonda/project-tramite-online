@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.tramite.online.config.security.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import com.tramite.online.config.security.oauth2.service.CustomOAuth2UserService;
 
 
