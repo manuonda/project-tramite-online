@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,12 +19,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.tramite.online.config.security.oauth2.extractor.FacebookOAuth2UserInfoExtractor;
+
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalErroHandler extends ResponseEntityExceptionHandler{
 
+    private final Logger logger = LoggerFactory.getLogger(FacebookOAuth2UserInfoExtractor.class);
 
   private static final URI NOT_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/not-found");
   private static final URI ISE_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/server-error");
@@ -33,7 +38,7 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(ResourceNotFound.class)
     ResponseEntity<ProblemDetail>  handleResourceNotFound(ResourceNotFound ex){
-      log.info("HandleResurceNotFound : {}", ex.getMessage());
+      logger.info("HandleResurceNotFound : {}", ex.getMessage());
       ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, 
       ex.getMessage());
       problemDetail.setTitle(ex.getMessage());
@@ -45,7 +50,7 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(ResourceFound.class)
     ResponseEntity<ProblemDetail> handleResourceFound(ResourceFound ex){
-      log.info("HandlerResourceFound  {}", ex.getMessage());
+      logger.info("HandlerResourceFound  {}", ex.getMessage());
       ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FOUND,
       ex.getMessage());
       problemDetail.setTitle(ex.getMessage());
@@ -67,7 +72,7 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        log.info("HandlerArgumentNotValid  {}", ex.getMessage());
+        logger.info("HandlerArgumentNotValid  {}", ex.getMessage());
         
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
         problemDetail.setTitle("Validation Error");

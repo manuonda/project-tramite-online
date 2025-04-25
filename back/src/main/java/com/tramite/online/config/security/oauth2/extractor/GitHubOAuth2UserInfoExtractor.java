@@ -1,4 +1,6 @@
 package com.tramite.online.config.security.oauth2.extractor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GitHubOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInfoExtractor{
     
+    private final Logger logger = LoggerFactory.getLogger(FacebookOAuth2UserInfoExtractor.class);
 
     @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {
-        log.info("Extracting user info from GitHub OauthUser : {}", oAuth2User);
+        logger.info("Extracting user info from GitHub OauthUser : {}", oAuth2User);
         
         Object idAttribute = oAuth2User.getAttribute("id");
         String id = (idAttribute != null) ? idAttribute.toString() : null;
@@ -25,7 +28,7 @@ public class GitHubOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInf
         String login = oAuth2User.getAttribute("login");
         name = (name != null) ? name: login;
 
-        return UserInfo.builder()
+        return new UserInfo.Builder()
         .providerId(id)
         .name(name)
         .email(email)

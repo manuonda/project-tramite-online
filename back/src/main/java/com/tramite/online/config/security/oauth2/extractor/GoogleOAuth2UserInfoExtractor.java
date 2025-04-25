@@ -13,6 +13,8 @@
  */
 package com.tramite.online.config.security.oauth2.extractor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class GoogleOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInfoExtractor{
-    
+        
+   private final Logger logger = LoggerFactory.getLogger(FacebookOAuth2UserInfoExtractor.class);
+
     @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {
-       log.info("Extract User info from Google OAuthUser : ", oAuth2User);
-       return UserInfo.builder()
+       logger.info("Extract User info from Google OAuthUser : ", oAuth2User);
+       return new UserInfo.Builder()
        .providerId(oAuth2User.getAttribute("sub"))
        .name(oAuth2User.getAttribute("name"))
        .email(oAuth2User.getAttribute("email"))
