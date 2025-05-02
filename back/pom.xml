@@ -12,8 +12,8 @@
     <groupId>com.tramite.online</groupId>
     <artifactId>back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>back</name>
-    <description>Demo Project Tramite Online</description>
+    <name>tramite-online-back</name>
+    <description>Project Tramite Online Back</description>
     <url />
     <licenses>
         <license />
@@ -77,11 +77,7 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
+      
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -142,18 +138,26 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
             <scope>test</scope>
-        </dependency>
+        </dependency> -->
 
         <!-- oauth  server -->
         <dependency>
          <groupId>org.springframework.boot</groupId>
          <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
        </dependency>
+
+
+<dependency>
+   <groupId>io.jsonwebtoken</groupId>
+   <artifactId>jjwt</artifactId>
+   <version>0.12.3</version>
+</dependency>
+
     </dependencies>
 
     <build>
@@ -165,12 +169,6 @@
                     <image>
                         <name>${dockerImageName}</name>
                     </image>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

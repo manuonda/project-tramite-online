@@ -13,7 +13,7 @@ import com.tramite.online.config.security.model.UserInfo;
 import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
 import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2UserInfoExtractor;
 
-import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * Extracts user information from Facebook's OAuth2User object and maps it to
@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since 20/3/2025
  */
 @Component
-@Slf4j
 public class FacebookOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInfoExtractor {
 
     private final Logger logger = LoggerFactory.getLogger(FacebookOAuth2UserInfoExtractor.class);

@@ -18,25 +18,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 
 @Entity
 @Table(name = "sections")
-@ToString(exclude = "questions")
-@EqualsAndHashCode(exclude = "questions")
 public class Section extends Auditable<String>{
 
     @Id
@@ -65,5 +50,65 @@ public class Section extends Auditable<String>{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_form_user", nullable = false)
     private FormUser form;
+
+
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public SectionType getSectionType() {
+        return sectionType;
+    }
+
+    public void setSectionType(SectionType sectionType) {
+        this.sectionType = sectionType;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
+    public FormUser getForm() {
+        return form;
+    }
+
+    public void setForm(FormUser form) {
+        this.form = form;
+    }
+
+    
 
 }

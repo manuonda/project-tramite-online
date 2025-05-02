@@ -19,15 +19,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.tramite.online.config.security.oauth2.extractor.FacebookOAuth2UserInfoExtractor;
 
-import lombok.extern.slf4j.Slf4j;
+/**
+ * GlobalErroHandler centralizes exception handling, providing meaningful 
+ * error responses with appropriate HTTP status codes and detailed descriptions.
+ */
 
 @RestControllerAdvice
-@Slf4j
 public class GlobalErroHandler extends ResponseEntityExceptionHandler{
 
-    private final Logger logger = LoggerFactory.getLogger(FacebookOAuth2UserInfoExtractor.class);
+    private final Logger logger = LoggerFactory.getLogger(GlobalErroHandler.class);
 
   private static final URI NOT_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/not-found");
   private static final URI ISE_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/server-error");
@@ -36,17 +37,17 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
    
   
 
+
     @ExceptionHandler(ResourceNotFound.class)
-    ResponseEntity<ProblemDetail>  handleResourceNotFound(ResourceNotFound ex){
-      logger.info("HandleResurceNotFound : {}", ex.getMessage());
-      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, 
-      ex.getMessage());
+    ResponseEntity<ProblemDetail> handleResourceNotFound(ResourceNotFound ex){
+      logger.info("Handle Resource Not Found {}", ex.getMessage());
+      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
       problemDetail.setTitle(ex.getMessage());
       problemDetail.setProperty("time", Instant.now());
       problemDetail.setType(NOT_FOUND_TYPE);
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problemDetail);
-    }
 
+    }
 
     @ExceptionHandler(ResourceFound.class)
     ResponseEntity<ProblemDetail> handleResourceFound(ResourceFound ex){

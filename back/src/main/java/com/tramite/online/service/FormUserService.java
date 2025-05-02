@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,17 +22,22 @@ import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.FormUserRepository;
 import com.tramite.online.service.validator.ValidatorFormUser;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@AllArgsConstructor
-@Slf4j
 public class FormUserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FormUserService.class);
 
     private final FormUserRepository formUserRepository;
     private final ValidatorFormUser validatorFormUser;
 
+    
+
+
+    public FormUserService(FormUserRepository formUserRepository, ValidatorFormUser validatorFormUser) {
+        this.formUserRepository = formUserRepository;
+        this.validatorFormUser = validatorFormUser;
+    }
 
     public PagedResult<FormUserDTO> findAll(int page, int size, 
     String sortDirection,FormUserDTO formDTO ){
@@ -81,7 +88,7 @@ public class FormUserService {
 
     
     public FormUserDTO getById(Long id){
-        log.info("Find User by Id {}" , id);
+        logger.info("Find User by Id {}" , id);
         return this.formUserRepository.findById(id)
         .map( FormUserService::toFormDTO)
         .orElseThrow(() ->  new ResourceNotFound("Form User Not found by id " + id ));
@@ -103,7 +110,7 @@ public class FormUserService {
         formUser.setDescription(dto.getDescription());
         Set<Section> sections = new HashSet<>();
         dto.getSections().forEach(sectionDTO -> {
-            log.debug("Adding SectionDTO ", sectionDTO.getId());
+            logger.debug("Adding SectionDTO ", sectionDTO.getId());
             Section section = SectionService.toSection(sectionDTO);
             section.setForm(formUser);
             sections.add(section);

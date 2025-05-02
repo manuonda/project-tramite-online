@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +24,13 @@ import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.QuestionRepository;
 import com.tramite.online.repository.SectionRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
 
 @Service
-@Slf4j
 public class SectionService {
 
-    
+    private static final Logger logger = LoggerFactory.getLogger(SectionService.class);
+
     private final SectionRepository sectionRepository;
     private final QuestionRepository questionRepository;
 
@@ -107,7 +108,7 @@ public class SectionService {
      * @param id
      */
     public void delete(Long id) {
-        log.debug("Delete by id {}", id);
+        logger.debug("Delete by id {}", id);
         Section section = this.sectionRepository.findById(id)
         .orElseThrow(() ->  new ResourceNotFound("Section Not Found by id : " + id));
 
@@ -139,7 +140,7 @@ public class SectionService {
          
         Set<Question> newQuestions = new HashSet<>();
         sectionDTO.getQuestions().forEach(questionDTO -> {
-            log.debug("Adding questionDTO ",questionDTO.getId());
+            logger.debug("Adding questionDTO {} ",questionDTO.getId());
             Question question =toQuestion(questionDTO);
             question.setSection(section);
             newQuestions.add(question);

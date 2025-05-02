@@ -10,9 +10,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tramite.online.config.ApplicationProperties;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
+
+import com.tramite.online.config.security.oauth2.service.TokenProvider;
 
 
 @Component

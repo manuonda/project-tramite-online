@@ -8,13 +8,11 @@ import com.tramite.online.config.security.model.TypeProvider;
 import com.tramite.online.config.security.model.UserInfo;
 import com.tramite.online.config.security.oauth2.service.ProviderAwareOAuth2UserInfoExtractor;
 
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 public class GitHubOAuth2UserInfoExtractor implements ProviderAwareOAuth2UserInfoExtractor{
     
-    private final Logger logger = LoggerFactory.getLogger(FacebookOAuth2UserInfoExtractor.class);
+    private final Logger logger = LoggerFactory.getLogger(GitHubOAuth2UserInfoExtractor.class);
 
     @Override
     public UserInfo extractUserInfo(OAuth2User oAuth2User) {

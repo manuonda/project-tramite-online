@@ -11,7 +11,8 @@ public record ApplicationProperties(
     @Min(1)
     int pageSize,
     String jwtSecret,
-    long jwtExpiration
+    long jwtExpiration,
+    long jwtRefreshToken
 ) {
 
 }
