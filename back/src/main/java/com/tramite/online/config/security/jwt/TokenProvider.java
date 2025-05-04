@@ -1,4 +1,4 @@
-package com.tramite.online.config.security.oauth2.service;
+package com.tramite.online.config.security.jwt;
 
 import java.util.Date;
 import java.util.function.Function;
@@ -7,10 +7,8 @@ import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.config.annotation.rsocket.RSocketSecurity;
 import org.springframework.stereotype.Service;
 
-import com.nimbusds.jwt.JWTParser;
 import com.tramite.online.config.ApplicationProperties;
 import com.tramite.online.domain.entity.User;
 

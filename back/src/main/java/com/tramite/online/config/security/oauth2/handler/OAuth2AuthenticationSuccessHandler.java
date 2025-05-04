@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.tramite.online.config.ApplicationProperties;
+import com.tramite.online.config.security.jwt.TokenProvider;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,15 +18,30 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-import com.tramite.online.config.security.oauth2.service.TokenProvider;
-
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
+    private final ApplicationProperties appProperties;
 
-    private ApplicationProperties appProperties;
+    
+
+    public OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, ApplicationProperties appProperties,
+            HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+        this.tokenProvider = tokenProvider;
+        this.appProperties = appProperties;
+        this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
+    }
+
+    public OAuth2AuthenticationSuccessHandler(String defaultTargetUrl, TokenProvider tokenProvider,
+            ApplicationProperties appProperties,
+            HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+        super(defaultTargetUrl);
+        this.tokenProvider = tokenProvider;
+        this.appProperties = appProperties;
+        this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
+    }
 
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
