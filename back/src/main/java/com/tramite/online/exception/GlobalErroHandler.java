@@ -60,6 +60,16 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
       return ResponseEntity.status(HttpStatus.FOUND).body(problemDetail);
     }
 
+    @ExceptionHandler(OAuth2AuthenticationProcessingException.class)
+    ResponseEntity<ProblemDetail> handleOAuth2AuhtenticationProcessException(OAuth2AuthenticationProcessingException ex){
+      logger.info("Handle OAuth2AuthenticationProcessException {}", ex.getMessage());
+      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR,
+      ex.getMessage());
+      problemDetail.setTitle(ex.getMessage());
+      problemDetail.setProperty("time", Instant.now());
+      problemDetail.setType(ISE_FOUND_TYPE);
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail);
+    }
 
     /**
      * Puesto existe el metodo MethodArgumentNotValidException
@@ -90,7 +100,9 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
     
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
-    
+
+
+         
   
 
     

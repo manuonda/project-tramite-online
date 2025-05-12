@@ -8,7 +8,14 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.tramite.online.config.security.model.UserInfo;
 import com.tramite.online.config.security.oauth2.factory.OAuth2UserInfoExtractorFactory;
+import com.tramite.online.config.security.principal.UserPrincipal;
+import com.tramite.online.domain.entity.User;
+import com.tramite.online.exception.OAuth2AuthenticationProcessingException;
+import com.tramite.online.service.UserManagementService;
+
+import io.micrometer.common.util.StringUtils;
 
 
 
@@ -27,11 +34,14 @@ import com.tramite.online.config.security.oauth2.factory.OAuth2UserInfoExtractor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final OAuth2UserInfoExtractorFactory extractorFactory;
+    private final UserManagementService userManagementService;
     private final Logger log = LoggerFactory.getLogger(CustomOAuth2UserService.class);
 
     public CustomOAuth2UserService(
-        OAuth2UserInfoExtractorFactory extractorFactory) {
+        OAuth2UserInfoExtractorFactory extractorFactory ,
+        UserManagementService userManagementService) {
         this.extractorFactory = extractorFactory;
+        this.userManagementService = userManagementService;
         log.info("Injected userInfoExtractors: {}", extractorFactory.getAllExtractors().keySet()); // Agregar este log
     }
 
@@ -51,7 +61,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new OAuth2AuthenticationException("Authentication method not supported" + registrationId);
         }
 
-        return oAuth2User;
+        UserInfo userInfo = extractor.extractUserInfo(oAuth2User);
+
+        if (StringUtils.isEmpty(oAuth2User.getName())) {
+           log.error("Email not found from OAuth2 provider");
+           throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+        }
+
+        User user =  this.userManagementService.processOAuthUser(userInfo);
+    
+        return UserPrincipal.create(user, oAuth2User.getAttributes());
     }
   
 

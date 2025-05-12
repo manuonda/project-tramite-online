@@ -4,17 +4,25 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 
 @Component
-public class JwtAuthenticationFilter  extends  OncePerRequestFilter{
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private final TokenProvider tokenProvider;
@@ -25,14 +33,43 @@ public class JwtAuthenticationFilter  extends  OncePerRequestFilter{
         this.userDetailsService = userDetailsService;
     }
 
-    
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-       
-                
-    
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain) throws ServletException, IOException {
+
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        var jwt = this.tokenProvider.getJWTFromRequest(request);
+        String userName = this.tokenProvider.getUsernameFromToken(jwt);
+        try {
+
+            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+                if (Boolean.TRUE.equals(this.tokenProvider.validateToken(jwt, userDetails))) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    logger.debug("JWT Authentication success for username {}", userName);
+                }
+
+            }
+        } catch (UsernameNotFoundException e) {
+            logger.error("User Not Found for username/email from JWT : ", e);
+        } catch (ExpiredJwtException e) {
+            logger.warn("Expired JWT Token : {} - {}", e.getMessage(), request.getRequestURI());
+        } catch (JwtException e) {
+            logger.warn("Invalid JWT Token : {} - {}", e.getMessage(), request.getRequestURI());
+        } catch (Exception e) {
+            logger.error("Could not set user authentication in security context", e);
+        }
+
+        filterChain.doFilter(request, response);
+
     }
 
 }

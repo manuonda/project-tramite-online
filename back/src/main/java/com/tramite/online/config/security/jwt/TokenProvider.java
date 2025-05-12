@@ -7,7 +7,10 @@ import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.tramite.online.config.ApplicationProperties;
 import com.tramite.online.domain.entity.User;
@@ -16,10 +19,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * This class is responsible for generating tokens and validating 
- * the information contained within them.
+ * This class is responsible for generating tokens and validating the
+ * information contained within them.
  */
 @Service
 public class TokenProvider {
@@ -27,30 +31,25 @@ public class TokenProvider {
     private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private final ApplicationProperties appProperties;
-    
-    public TokenProvider(ApplicationProperties appProperties){
-        this.appProperties = appProperties;  
+
+    public TokenProvider(ApplicationProperties appProperties) {
+        this.appProperties = appProperties;
     }
 
     public String generateAccessToken(User user) {
         logger.info("Generate Access Token : {}", user);
-        return Jwts.builder()
-                .subject(user.getUserName())
-                //.claim("roles", user.getRole().name().toString())
+        return Jwts.builder().subject(user.getUserName())
+                // .claim("roles", user.getRole().name().toString())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + this.appProperties.jwtExpiration()))
-                .signWith(getSigninKey())
-                .compact();
+                .signWith(getSigninKey()).compact();
     }
 
     public String generateRefreshToken(User user) {
         logger.info("Generate Refresh Token : {}", user);
-        return Jwts.builder()
-                .subject(user.getUserName())
-                .issuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().subject(user.getUserName()).issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + this.appProperties.jwtRefreshToken()))
-                .signWith(getSigninKey())
-                .compact();
+                .signWith(getSigninKey()).compact();
     }
 
     public boolean isValidAccessToken(String token, String username) {
@@ -80,17 +79,28 @@ public class TokenProvider {
         return resolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token){
-        return Jwts.parser()
-        .verifyWith(getSigninKey())
-        .build()
-        .parseSignedClaims(token)
-        .getPayload();
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser().verifyWith(getSigninKey()).build().parseSignedClaims(token).getPayload();
     }
 
-    private SecretKey getSigninKey(){
+    private SecretKey getSigninKey() {
         byte[] keyBytes = Decoders.BASE64URL.decode(this.appProperties.jwtSecret());
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String getJWTFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring("Bearer ".length());
+        }
+
+        return null;
+    }
+
+     public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = this.getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
 }

@@ -4,12 +4,12 @@ package com.tramite.online.service;
 import java.util.Optional;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.tramite.online.config.security.model.UserInfo;
 import com.tramite.online.domain.entity.User;
-import com.tramite.online.repository.UserRepository;
-import  org.slf4j.LoggerFactory;
+import  com.tramite.online.repository.UserRepository;
 
 
 /**
@@ -32,7 +32,7 @@ public class UserManagementService {
      * OAuth2 from provideers
      * @param userInfo
      */
-    public void processOAuthUser(UserInfo userInfo){
+    public User processOAuthUser(UserInfo userInfo){
         logger.info("Saving user from OAuth2 : {}",userInfo);
 
         Optional<User> existingUser = this.userRepository.findByProviderAndProviderId(userInfo.getProvider(), 
@@ -54,7 +54,7 @@ public class UserManagementService {
             user = this.mapUserInfoToUser(userInfo);
         }
         
-        this.userRepository.save(user);
+        return this.userRepository.save(user);
     }
 
 
