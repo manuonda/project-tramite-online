@@ -28,9 +28,16 @@ spring:
             github:
               client-id: ${GITHUB_CLIENT_ID:Ov23liSxDfcnj6N3FF5J}
               client-secret: ${GITHUB_CLIENT_SECRET:9fb8f322d3d310eb01185f933153a5cee9228cc8}
-
+         
+         
 application:
-    page-size: 10
+  page-size: 10
+  jwtSecret: tu_secreto_aqui
+  jwtExpiration: 3600000
+  jwtRefreshToken: 86400000
+  oauth2:
+    authorized-redirect-uris:
+      - http://localhost:4200/oauth2/redirect
 
 management:
     info:

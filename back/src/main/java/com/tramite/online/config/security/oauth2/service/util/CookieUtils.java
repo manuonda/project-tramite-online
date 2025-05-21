@@ -32,6 +32,8 @@ public class CookieUtils {
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
+         // En producción, considera habilitar esto:
+        // cookie.setSecure(true);
         response.addCookie(cookie);
     }
 
