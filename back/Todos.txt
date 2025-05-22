@@ -1,0 +1,5 @@
+1 - Mejora en cuanto a errores :
+problemDetail.setProperty("errorCode", "TRO-404-001");
+crear un enum de errores ejemplo de ErrorCode y alli respentar 
+los codigos de los methods of Class GlobalExceptionHandler.
+

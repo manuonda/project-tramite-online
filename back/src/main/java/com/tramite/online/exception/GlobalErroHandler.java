@@ -52,12 +52,12 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
     @ExceptionHandler(ResourceFound.class)
     ResponseEntity<ProblemDetail> handleResourceFound(ResourceFound ex){
       logger.info("HandlerResourceFound  {}", ex.getMessage());
-      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FOUND,
+      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,
       ex.getMessage());
       problemDetail.setTitle(ex.getMessage());
       problemDetail.setProperty("time", Instant.now());
       problemDetail.setType(ISE_FOUND_TYPE);
-      return ResponseEntity.status(HttpStatus.FOUND).body(problemDetail);
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(problemDetail);
     }
 
     @ExceptionHandler(OAuth2AuthenticationProcessingException.class)
@@ -70,6 +70,17 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
       problemDetail.setType(ISE_FOUND_TYPE);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problemDetail);
     }
+
+    @ExceptionHandler(BadRequestException.class) 
+    protected ResponseEntity<Object> handleBadRequest(BadRequestException ex){
+      logger.info("BanRequestException : {}" , ex.getMessage());
+      ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST ,ex.getMessage());
+      problemDetail.setTitle(ex.getMessage());
+      problemDetail.setProperty("time", Instant.now());
+      problemDetail.setType(ISE_FOUND_TYPE);
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
+    }
+
 
     /**
      * Puesto existe el metodo MethodArgumentNotValidException
@@ -101,7 +112,7 @@ public class GlobalErroHandler extends ResponseEntityExceptionHandler{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problemDetail);
     }
 
-
+    
          
   
 
