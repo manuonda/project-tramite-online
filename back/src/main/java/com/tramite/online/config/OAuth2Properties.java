@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "application.oauth2")
 @Component
 public record OAuth2Properties(
-List<String> authorizedRedirectUris
+  List<String> authorizedRedirectUris
 ) {
        
     public OAuth2Properties {
@@ -17,4 +17,10 @@ List<String> authorizedRedirectUris
             authorizedRedirectUris = new ArrayList<>();
         }
     }
+
+    public List<String> getAuthorizedReidrectUris(){
+        return authorizedRedirectUris;
+    }
 }
+
+

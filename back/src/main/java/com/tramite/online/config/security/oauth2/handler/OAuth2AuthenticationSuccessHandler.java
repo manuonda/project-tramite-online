@@ -2,7 +2,6 @@ package com.tramite.online.config.security.oauth2.handler;
 
 import java.io.IOException;
 import java.net.URI;
-import java.security.DrbgParameters;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
@@ -10,21 +9,18 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.tramite.online.config.ApplicationProperties;
+import com.tramite.online.config.OAuth2Properties;
 import com.tramite.online.config.security.jwt.TokenProvider;
 import com.tramite.online.config.security.oauth2.factory.OAuth2UserInfoExtractorFactory;
 import com.tramite.online.config.security.oauth2.repository.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.tramite.online.config.security.oauth2.service.OAuth2UserInfoExtractor;
+import static com.tramite.online.config.security.oauth2.repository.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 import com.tramite.online.config.security.oauth2.service.util.CookieUtils;
 import com.tramite.online.service.UserManagementService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import static  com.tramite.online.config.security.oauth2.repository.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
-
-import jakarta.servlet.http.Cookie;
 
 /**
  * This class handles the successful authentication process for OAuth2 users. It
@@ -37,19 +33,20 @@ import jakarta.servlet.http.Cookie;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
   private final TokenProvider tokenProvider;
-  private final ApplicationProperties appProperties;
+  private final OAuth2Properties oauth2Properties;
   private final UserManagementService userManagementService;
   private final OAuth2UserInfoExtractorFactory extractorFactory;
   private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
-  public OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, ApplicationProperties appProperties,
+  public OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, 
       UserManagementService userManagementService, OAuth2UserInfoExtractorFactory extractorFactory,
-      HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+      HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository,
+      OAuth2Properties oauth2Properties) {
     this.tokenProvider = tokenProvider;
-    this.appProperties = appProperties;
     this.userManagementService = userManagementService;
     this.extractorFactory = extractorFactory;
     this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
+    this.oauth2Properties = oauth2Properties;
   }
 
   
@@ -112,7 +109,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
   private boolean isAuthorizedRedirectUri(String uri) {
     URI clientRedirectUri = URI.create(uri);
 
-    return appProperties.getOAuth2().getAuthorizedRedirectUris().stream().anyMatch(authorizedRedirectUri -> {
+    return  oauth2Properties.authorizedRedirectUris().stream().anyMatch(authorizedRedirectUri -> {
       // Only validate host and port. Let the clients use different paths if they want
       // to
       URI authorizedURI = URI.create(authorizedRedirectUri);

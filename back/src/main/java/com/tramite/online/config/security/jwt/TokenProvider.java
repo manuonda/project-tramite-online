@@ -8,11 +8,13 @@ import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.tramite.online.config.ApplicationProperties;
+import com.tramite.online.config.security.principal.UserPrincipal;
 import com.tramite.online.domain.entity.User;
 
 import io.jsonwebtoken.Claims;
@@ -20,6 +22,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+
+
+
 
 /**
  * This class is responsible for generating tokens and validating the
@@ -102,5 +107,25 @@ public class TokenProvider {
         final String username = this.getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+     public String createToken(Authentication authentication) {
+        logger.info("Create Token for user ");
+        UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
+        
+    
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + appProperties.jwtExpiration());
+        return Jwts.builder()
+          .subject(userPrincipal.getId().toString())
+          .claim("username", userPrincipal.getUsername())
+          .issuedAt(now)
+          .expiration(expirationDate)
+          .signWith(getSigninKey())
+          .compact();
+    
+
+     }
+
+  
 
 }
