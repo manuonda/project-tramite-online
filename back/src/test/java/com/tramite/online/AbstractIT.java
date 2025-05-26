@@ -6,8 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 
-import io.restassured.RestAssured;
-
 @Import(TestContainerConfiguration.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public abstract class AbstractIT {
@@ -17,6 +15,6 @@ public abstract class AbstractIT {
 
     @BeforeEach
     void setUP(){
-        RestAssured.port = port;
+        //RestAssured.port = port;
     }
 }

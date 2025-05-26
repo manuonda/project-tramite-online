@@ -1,20 +1,27 @@
 package com.tramite.online.service;
 
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.tramite.online.TestContainerConfiguration;
 import com.tramite.online.domain.entity.Section;
@@ -24,16 +31,6 @@ import com.tramite.online.domain.type.SectionType;
 import com.tramite.online.exception.ResourceFound;
 import com.tramite.online.exception.ResourceNotFound;
 import com.tramite.online.repository.SectionRepository;
-
-import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 
@@ -61,12 +58,12 @@ public class SectionServiceTest {
         sectionDTO.setEnabled(Boolean.TRUE);
         sectionDTO.setSectionType(SectionType.SECTION_PANELS);
 
-        section = new Section().builder()
-        .name(TITLE)
-        .description("Description")
-        .enabled(Boolean.TRUE)
-        .sectionType(SectionType.SECTION_WIZARD)
-        .build();
+        section = new Section();
+        section.setName(TITLE);
+        section.setDescription("Description");
+        section.setEnabled(Boolean.TRUE);
+        section.setSectionType(SectionType.SECTION_WIZARD);
+        
     }
 
     @Test
@@ -109,11 +106,13 @@ public class SectionServiceTest {
     @DisplayName("Exception exist name section")
     public void givenExistingNameSection_whenSaveSection_thenThrowsException(){
         //given 
-        Section section = new Section()
-        .builder()
-        .name(TITLE)
-        .description("Description one")
-        .build();
+       
+
+          section = new Section();
+        section.setName(TITLE);
+        section.setDescription("Description");
+        section.setEnabled(Boolean.TRUE);
+        section.setSectionType(SectionType.SECTION_WIZARD);
          when(this.sectionRepository.findByName(TITLE)).thenReturn(Optional.of(section));
 
         //when 

@@ -1,9 +1,5 @@
 package com.tramite.online.repository;
 
-import com.tramite.online.TestContainerConfiguration;
-import com.tramite.online.domain.entity.Section;
-import com.tramite.online.domain.type.SectionType;
-
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
@@ -12,6 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+
+import com.tramite.online.TestContainerConfiguration;
+import com.tramite.online.domain.entity.Section;
+import com.tramite.online.domain.type.SectionType;
 
 @DataJpaTest
 @Import(TestContainerConfiguration.class)
@@ -46,7 +46,11 @@ public class SectionRepositoryTest {
     @DisplayName("Test Update Section")
     public void givenSection_whenUpdate_thenReturnObject(){
         //given
-        Section section = new Section(null, "name","description one",true, SectionType.SECTION_WIZARD, null, null);
+        Section  section = new Section();
+        section.setName("Title one");
+        section.setDescription("Description");
+        section.setEnabled(Boolean.TRUE);
+        section.setSectionType(SectionType.SECTION_WIZARD);
         Section sectionSave = this.sectionRepository.save(section);
        
         //when 
