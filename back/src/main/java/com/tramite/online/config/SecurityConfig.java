@@ -32,8 +32,8 @@ import com.tramite.online.config.security.oauth2.service.CustomOAuth2UserService
 public class SecurityConfig {
 
 
-    private final static String OAUTH2_BASE_URI = "/oauth2/authorize";
-    private final static String OAUTH2_REDIRECTION_ENDPOINT = "/oauth2/callback/*";
+   private final static String OAUTH2_BASE_URI = "/oauth2/authorization";        // Cambio aquí
+    private final static String OAUTH2_REDIRECTION_ENDPOINT = "/login/oauth2/code/*"; // Cambio aquí
 
 
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -65,7 +65,14 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(authorize -> {
              authorize
-            .requestMatchers("/api/v1/**").permitAll()
+            .requestMatchers("/api/v1/**",
+            "/",
+            "/error",
+            "/login",
+            "/login/oauth2/**",
+            "/api/v1/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**").permitAll()
             .requestMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
             .anyRequest().authenticated();
             
@@ -78,7 +85,7 @@ public class SecurityConfig {
                         )
                         .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri(OAUTH2_REDIRECTION_ENDPOINT))
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(customOAuth2UserService))
-                        .tokenEndpoint(tokenEndpointConfig -> tokenEndpointConfig.accessTokenResponseClient(authorizationCodeTokenResponseClient()))
+                        //.tokenEndpoint(tokenEndpointConfig -> tokenEndpointConfig.accessTokenResponseClient(authorizationCodeTokenResponseClient()))
                         .successHandler(oAuth2AuthenticationSucessHandler)
                         .failureHandler(oAuth2AuthenticationFailureHandler)
                 );

@@ -1,6 +1,8 @@
 package com.tramite.online.config.security.jwt;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +36,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.customUserDetailService = customUserDetailService;
     }
 
+  // Rutas que NO deben pasar por JWT filter
+       private static final List<String> EXCLUDED_PATHS = Arrays.asList(
+        "/",
+        "/error",
+        "/login",
+        "/oauth2/authorization",    // Inicio OAuth2
+        "/oauth2/callback",         // Si usas callback personalizado
+        "/login/oauth2/code"        // Callbacks estándar
+    );
+    
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return EXCLUDED_PATHS.stream()
+        .anyMatch(excluded -> path.startsWith(excluded));
+    }
+
+
+
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
             @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -41,6 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         logger.info("doFilterInternal");
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer")) {
+            logger.info("AuthHeader is null  || auth Header no content Bearer");
             filterChain.doFilter(request, response);
             return;
         }
