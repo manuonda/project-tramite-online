@@ -38,7 +38,7 @@ public class FormUser extends Auditable<String>{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(columnDefinition = "id_user")
+    @JoinColumn(name = "id_user")
     private User user;
 
     

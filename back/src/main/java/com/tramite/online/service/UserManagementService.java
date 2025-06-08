@@ -44,7 +44,7 @@ public class UserManagementService {
 
         User user;
         if (existingUser.isPresent()){
-            logger.info("User find {}",existingUser.get());
+            logger.info("User finded {}",existingUser.get());
             user = existingUser.get();
             user.setEmail(userInfo.getEmail());
             user.setUserName(userInfo.getName());
@@ -54,6 +54,7 @@ public class UserManagementService {
             user = this.mapUserInfoToUser(userInfo);
         }
         
+        // update o create user
         return this.userRepository.save(user);
     }
 
