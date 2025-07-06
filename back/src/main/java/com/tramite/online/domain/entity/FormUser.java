@@ -41,6 +41,11 @@ public class FormUser extends Auditable<String>{
     @JoinColumn(name = "id_user")
     private User user;
 
+
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name="id_workspace")
+    private WorkSpace workSpace;
+
     
     public FormUser() {
     }
@@ -103,6 +108,15 @@ public class FormUser extends Auditable<String>{
         this.user = user;
     }
 
+     public WorkSpace getWorkSpace() {
+        return workSpace;
+    }
+
+
+    public void setWorkSpace(WorkSpace workSpace) {
+        this.workSpace = workSpace;
+    }
+    
 
     @Override
     public String toString() {
@@ -149,6 +163,7 @@ public class FormUser extends Auditable<String>{
 
 
     }
+   
     
     
     
